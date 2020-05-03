@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-use Mezzio\Authentication\AuthenticationMiddleware;
-use Mezzio\Authorization\AuthorizationMiddleware;
-use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
+use Psr\Container\ContainerInterface;
+use Zend\Expressive\MiddlewareFactory;
 use Zend\Expressive\Handler\NotFoundHandler;
+use Zend\Stratigility\Middleware\ErrorHandler;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
 use Zend\Expressive\Helper\UrlHelperMiddleware;
-use Zend\Expressive\MiddlewareFactory;
+use Mezzio\Authentication\AuthenticationMiddleware;
+use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\Expressive\Router\Middleware\DispatchMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
-use Zend\Expressive\Router\Middleware\RouteMiddleware;
-use Zend\Stratigility\Middleware\ErrorHandler;
 
 /**
  * Setup middleware pipeline:
@@ -61,13 +60,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
 
     // Seed the UrlHelper with the routing results:
     $app->pipe(UrlHelperMiddleware::class);
-
-    // Add more middleware here that needs to introspect the routing results; this
-    // might include:
-    //
-    // - route-based authentication
-    // - route-based validation
-    // - etc.
 
     // Register the dispatch middleware in the middleware pipeline
     $app->pipe(DispatchMiddleware::class);
