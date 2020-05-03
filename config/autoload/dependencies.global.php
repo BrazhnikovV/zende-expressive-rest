@@ -25,8 +25,6 @@ return [
         'factories'  => [
             \App\Service\AuthAdapter::class => \App\Service\Factory\AuthAdapterFactory::class,
             \Mezzio\Authentication\AuthenticationMiddleware::class => AuthenticationMiddlewareFactory::class,
-            \App\Service\AuthorizationAdapter::class => \App\Service\Factory\AuthorizationAdapterFactory::class,
-            \Mezzio\Authorization\AuthorizationMiddleware::class => AuthorizationMiddlewareFactory::class
         ],
     ],
 ];

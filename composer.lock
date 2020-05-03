@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47aebb39c443cfc3b8b8bf94953c7f13",
+    "content-hash": "8716e3bbdd3bfecf793377718d0c6528",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -1469,6 +1469,54 @@
             ],
             "abandoned": "laminas/laminas-httphandlerrunner",
             "time": "2019-02-19T18:20:34+00:00"
+        },
+        {
+            "name": "zendframework/zend-permissions-rbac",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-permissions-rbac.git",
+                "reference": "b45da437ac91568491848323743548679a3df909"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-permissions-rbac/zipball/b45da437ac91568491848323743548679a3df909",
+                "reference": "b45da437ac91568491848323743548679a3df909",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0.1",
+                "zendframework/zend-coding-standard": "~1.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev",
+                    "dev-develop": "3.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Permissions\\Rbac\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Provides a role-based access control management",
+            "homepage": "https://github.com/zendframework/zend-permissions-rbac",
+            "keywords": [
+                "ZendFramework",
+                "authorization",
+                "rbac",
+                "zend-permssions-rbac"
+            ],
+            "abandoned": "laminas/laminas-permissions-rbac",
+            "time": "2019-06-25T06:15:10+00:00"
         },
         {
             "name": "zendframework/zend-servicemanager",

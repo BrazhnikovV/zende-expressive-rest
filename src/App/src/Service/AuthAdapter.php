@@ -8,6 +8,7 @@ use Mezzio\Authentication\UserInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Authentication\AuthenticationInterface;
 use Zend\Diactoros\Response\JsonResponse;
+use Zend\Expressive\Router\RouteResult;
 
 /**
  * Adapter used for authenticating user. It takes login and password on input

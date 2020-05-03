@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Handler\Auth\AuthorizationHandler;
+use App\Handler\Auth\Factory\AuthorizationHandlerFactory;
+
 /**
  * The configuration provider for the App module
  *
@@ -23,6 +26,7 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
+            'rbac'         => include __DIR__ . '/../../../config/autoload/authorization.local.php',
         ];
     }
 
@@ -37,6 +41,7 @@ class ConfigProvider
             ],
             'factories'  => [
                 Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
+                AuthorizationHandler::class => AuthorizationHandlerFactory::class
             ],
         ];
     }
@@ -47,11 +52,7 @@ class ConfigProvider
     public function getTemplates() : array
     {
         return [
-            'paths' => [
-                'app'    => [__DIR__ . '/../templates/app'],
-                'error'  => [__DIR__ . '/../templates/error'],
-                'layout' => [__DIR__ . '/../templates/layout'],
-            ],
+            'paths' => [],
         ];
     }
 }
