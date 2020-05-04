@@ -2,13 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Auth;
-
-use Auth\Handler\Rbac\AuthorizationHandler;
-use Auth\Handler\Rbac\Factory\AuthorizationHandlerFactory;
+namespace User;
 
 /**
- * The configuration provider for the Auth module
+ * The configuration provider for the User module
  *
  * @see https://docs.zendframework.com/zend-component-installer/
  */
@@ -25,7 +22,6 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
-            'rbac'         => include __DIR__ . '/../../../config/autoload/authorization.local.php',
         ];
     }
 
@@ -38,7 +34,6 @@ class ConfigProvider
             'invokables' => [
             ],
             'factories'  => [
-                AuthorizationHandler::class => AuthorizationHandlerFactory::class
             ],
         ];
     }

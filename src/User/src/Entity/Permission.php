@@ -1,12 +1,12 @@
 <?php
-namespace App\Entity;
+namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This class represents a permission.
- * @ORM\Entity(repositoryClass="\App\Repository\PermissionRepository")
+ * @ORM\Entity(repositoryClass="\User\Repository\PermissionRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="permission")
  */
@@ -45,7 +45,7 @@ class Permission
     protected $dateUpdated;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role", mappedBy="permissions")
+     * @ORM\ManyToMany(targetEntity="User\Entity\Role", mappedBy="permissions")
      * @ORM\JoinTable(name="role_permission",
      *      joinColumns={@ORM\JoinColumn(name="permission_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}

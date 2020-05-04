@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Handler;
 
-use App\Entity\User;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use User\Entity\User;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Plates\PlatesRenderer;

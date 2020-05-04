@@ -1,12 +1,12 @@
 <?php
-namespace App\Entity;
+namespace User\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This class represents a registered user.
- * @ORM\Entity(repositoryClass="\App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="\User\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="users")
  */
@@ -71,7 +71,7 @@ class User
     protected $passwordResetTokenCreationDate;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Role")
+     * @ORM\ManyToMany(targetEntity="User\Entity\Role")
      * @ORM\JoinTable(name="user_role",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
