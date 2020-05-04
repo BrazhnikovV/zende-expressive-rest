@@ -17,12 +17,11 @@ class UserManagerFactory
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $entityManager = $container->get('doctrine.entitymanager.orm_default');
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
         $roleManager = $container->get(RoleManager::class);
         $permissionManager = $container->get(PermissionManager::class);
-        $viewRenderer = $container->get('ViewRenderer');
-        $config = $container->get('Config');
+        $config = $container->get('config');
 
-        return new UserManager($entityManager, $roleManager, $permissionManager, $viewRenderer, $config);
+        return new UserManager($entityManager, $roleManager, $permissionManager, $config);
     }
 }

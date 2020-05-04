@@ -43,6 +43,7 @@
         "mezzio/mezzio-authentication": "^1.1",
         "mezzio/mezzio-authorization": "^1.0",
         "tuupola/cors-middleware": "^1.1",
+        "zendframework/zend-cache": "^2.7",
         "zendframework/zend-component-installer": "^2.1.1",
         "zendframework/zend-config-aggregator": "^1.0",
         "zendframework/zend-diactoros": "^1.7.1 || ^2.0",
