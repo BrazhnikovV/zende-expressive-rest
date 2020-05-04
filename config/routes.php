@@ -36,7 +36,7 @@ use Auth\Handler\Rbac\AuthorizationHandler;
  */
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
-    $app->get('/login', Auth\Handler\Login\LoginHandler::class, 'login');
+    $app->post('/login', Auth\Handler\Login\LoginHandler::class, 'login');
     $app->get('/api/ping',
         [
             AuthenticationHandler::class,
