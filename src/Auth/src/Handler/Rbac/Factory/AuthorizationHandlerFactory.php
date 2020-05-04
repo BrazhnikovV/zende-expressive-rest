@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Handler\Auth\Factory;
+namespace Auth\Handler\Rbac\Factory;
 
-use App\Handler\Auth\AuthorizationHandler;
+use Auth\Handler\Rbac\AuthorizationHandler;
 use Psr\Container\ContainerInterface;
 use Zend\Permissions\Rbac\Rbac;
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Zend\Expressive\Application;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\MiddlewareFactory;
-use App\Handler\Auth\AuthorizationHandler;
+use Auth\Handler\Rbac\AuthorizationHandler;
 
 /**
  * Setup routes with a single request method:

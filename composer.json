@@ -38,6 +38,8 @@
     },
     "require": {
         "php": "^7.1",
+        "dasprid/container-interop-doctrine": "^1.1",
+        "doctrine/migrations": "^2.2",
         "mezzio/mezzio-authentication": "^1.1",
         "mezzio/mezzio-authorization": "^1.0",
         "tuupola/cors-middleware": "^1.1",
@@ -61,7 +63,8 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/App/src/"
+            "App\\": "src/App/src/",
+            "Auth\\": "src/Auth/src/"
         }
     },
     "autoload-dev": {

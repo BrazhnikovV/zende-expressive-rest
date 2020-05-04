@@ -26,6 +26,7 @@ class AuthAdapter implements AuthenticationInterface
      */
     public function authenticate( ServerRequestInterface $request ): ?UserInterface
     {
+        // !Fixme когда передается неизвестная роль - вылетает exeption - No role with name "guests" could be found
         return new DefaultUser("guest", ["guest"]);
     }
 

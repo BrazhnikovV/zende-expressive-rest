@@ -20,6 +20,8 @@ class HomePageHandlerFactory
             ? $container->get(TemplateRendererInterface::class)
             : null;
 
-        return new HomePageHandler(get_class($container), $router, $template);
+        $em = $container->get('doctrine.entity_manager.orm_default');
+
+        return new HomePageHandler(get_class($container), $router, $template, $em);
     }
 }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace Auth;
 
-use App\Handler\Auth\AuthorizationHandler;
-use App\Handler\Auth\Factory\AuthorizationHandlerFactory;
+use Auth\Handler\Rbac\AuthorizationHandler;
+use Auth\Handler\Rbac\Factory\AuthorizationHandlerFactory;
 
 /**
- * The configuration provider for the App module
+ * The configuration provider for the Auth module
  *
  * @see https://docs.zendframework.com/zend-component-installer/
  */
@@ -19,13 +19,13 @@ class ConfigProvider
      *
      * To add a bit of a structure, each section is defined in a separate
      * method which returns an array with its configuration.
-     *
      */
     public function __invoke() : array
     {
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
+            'rbac'         => include __DIR__ . '/../../../config/autoload/authorization.local.php',
         ];
     }
 
@@ -36,10 +36,9 @@ class ConfigProvider
     {
         return [
             'invokables' => [
-                Handler\PingHandler::class => Handler\PingHandler::class,
             ],
             'factories'  => [
-                Handler\HomePageHandler::class => Handler\HomePageHandlerFactory::class,
+                AuthorizationHandler::class => AuthorizationHandlerFactory::class
             ],
         ];
     }
@@ -50,7 +49,9 @@ class ConfigProvider
     public function getTemplates() : array
     {
         return [
-            'paths' => [],
+            'paths' => [
+                'auth'    => [__DIR__ . '/../templates/'],
+            ],
         ];
     }
 }
