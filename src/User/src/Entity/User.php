@@ -85,7 +85,6 @@ class User
     public function __construct()
     {
         $this->roles = new ArrayCollection();
-        $this->posts = new ArrayCollection();
     }
 
     /**

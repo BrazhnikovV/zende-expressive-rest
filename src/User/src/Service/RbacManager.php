@@ -129,7 +129,6 @@ class RbacManager
 
         foreach ($roles as $role) {
             if ($this->rbac->isGranted($role->getName(), $permission)) {
-
                 if ($params==null)
                     return true;
 

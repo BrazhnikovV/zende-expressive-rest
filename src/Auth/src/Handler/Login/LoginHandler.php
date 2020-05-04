@@ -55,7 +55,7 @@ class LoginHandler implements RequestHandlerInterface
     {
         // Check if we do not have users in database at all. If so, create
         // the 'Admin' user.
-        //$this->userManager->createAdminUserIfNotExists();
+        $this->userManager->createAdminUserIfNotExists();
 
         return new JsonResponse([
             'login' => 'action',

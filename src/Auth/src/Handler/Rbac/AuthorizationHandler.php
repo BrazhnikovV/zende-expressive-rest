@@ -18,7 +18,11 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class AuthorizationHandler implements MiddlewareInterface
 {
-    private $rbac;
+    /**
+     * @access private
+     * @var User\Service\RbacManager $rbacManager - RBAC manager.
+     */
+    private $rbacManager;
 
     /**
      * AuthorizationHandler constructor.
@@ -26,7 +30,7 @@ class AuthorizationHandler implements MiddlewareInterface
      */
     public function __construct( $rbac )
     {
-        $this->rbac = $rbac;
+        $this->rbacManager = $rbac;
     }
 
     /**
@@ -44,11 +48,8 @@ class AuthorizationHandler implements MiddlewareInterface
         $route     = $request->getAttribute(RouteResult::class);
         $routeName = $route->getMatchedRoute()->getName();
 
-        $roles = $user->getRoles();
-        foreach ( $roles as $role ) {
-            if ( !$this->rbac->isGranted($role, $routeName, null ) )
-                return new EmptyResponse(403);
-        }
+        if ( !$this->rbacManager->isGranted($user, $routeName, null ) )
+            return new EmptyResponse(403);
 
         return $handler->handle($request);
     }

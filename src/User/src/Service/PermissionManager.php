@@ -12,23 +12,23 @@ class PermissionManager
      * Doctrine entity manager.
      * @var Doctrine\ORM\EntityManager
      */
-    private $entityManager;  
-    
+    private $entityManager;
+
     /**
      * RBAC manager.
      * @var User\Service\RbacManager
      */
     private $rbacManager;
-    
+
     /**
      * Constructs the service.
      */
-    public function __construct($entityManager, $rbacManager) 
+    public function __construct($entityManager, $rbacManager)
     {
         $this->entityManager = $entityManager;
         $this->rbacManager = $rbacManager;
     }
-    
+
     /**
      * Adds a new permission.
      * @param array $data
@@ -40,20 +40,20 @@ class PermissionManager
         if ($existingPermission!=null) {
             throw new \Exception('Permission with such name already exists');
         }
-        
+
         $permission = new Permission();
         $permission->setName($data['name']);
         $permission->setDescription($data['description']);
         $permission->setDateCreated(date('Y-m-d H:i:s'));
-        
+
         $this->entityManager->persist($permission);
-        
+
         $this->entityManager->flush();
-        
+
         // Reload RBAC container.
         $this->rbacManager->init(true);
     }
-    
+
     /**
      * Updates an existing permission.
      * @param Permission $permission
@@ -66,16 +66,16 @@ class PermissionManager
         if ($existingPermission!=null && $existingPermission!=$permission) {
             throw new \Exception('Another permission with such name already exists');
         }
-        
+
         $permission->setName($data['name']);
         $permission->setDescription($data['description']);
-        
+
         $this->entityManager->flush();
-        
+
         // Reload RBAC container.
         $this->rbacManager->init(true);
     }
-    
+
     /**
      * Deletes the given permission.
      */
@@ -83,11 +83,11 @@ class PermissionManager
     {
         $this->entityManager->remove($permission);
         $this->entityManager->flush();
-        
+
         // Reload RBAC container.
         $this->rbacManager->init(true);
     }
-    
+
     /**
      * This method creates the default set of permissions if no permissions exist at all.
      */
@@ -97,26 +97,27 @@ class PermissionManager
                 ->findOneBy([]);
         if ($permission!=null)
             return; // Some permissions already exist; do nothing.
-        
+
         $defaultPermissions = [
             'user.manage' => 'Manage users',
             'permission.manage' => 'Manage permissions',
             'role.manage' => 'Manage roles',
             'profile.any.view' => 'View anyone\'s profile',
             'profile.own.view' => 'View own profile',
+            'api.ping' => 'View test answer',
         ];
-        
+
         foreach ($defaultPermissions as $name=>$description) {
             $permission = new Permission();
             $permission->setName($name);
             $permission->setDescription($description);
             $permission->setDateCreated(date('Y-m-d H:i:s'));
-            
+
             $this->entityManager->persist($permission);
         }
-        
+
         $this->entityManager->flush();
-        
+
         // Reload RBAC container.
         $this->rbacManager->init(true);
     }

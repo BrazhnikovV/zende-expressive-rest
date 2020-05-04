@@ -4,6 +4,7 @@ namespace Auth\Service;
 use Mezzio\Authentication\DefaultUser;
 use Psr\Http\Message\ResponseInterface;
 use Mezzio\Authentication\UserInterface;
+use User\Entity\User;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Authentication\AuthenticationInterface;
@@ -68,8 +69,13 @@ class AuthAdapter implements AuthenticationInterface
      */
     public function authenticate( ServerRequestInterface $request ): ?UserInterface
     {
+        $user = $this->em->getRepository(User::class)->findOneById(1);
+        if ( $user == null ) {
+            throw new \Exception('There is no user with such identity');
+        }
+
         // !Fixme когда передается неизвестная роль - вылетает exeption - No role with name "guests" could be found
-        return new DefaultUser("guest", ["guest"]);
+        return new AuthDefaultUser($user->getEmail(), $user->getRoles(), []);
     }
 
     /**
