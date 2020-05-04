@@ -1,7 +1,7 @@
 <?php
-namespace App\Service\Factory;
+namespace Auth\Service\Factory;
 
-use App\Service\AuthAdapter;
+use Auth\Service\AuthAdapter;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\FactoryInterface;
 

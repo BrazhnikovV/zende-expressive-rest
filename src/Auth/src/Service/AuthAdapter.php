@@ -1,5 +1,5 @@
 <?php
-namespace App\Service;
+namespace Auth\Service;
 
 use Mezzio\Authentication\DefaultUser;
 use Psr\Http\Message\ResponseInterface;

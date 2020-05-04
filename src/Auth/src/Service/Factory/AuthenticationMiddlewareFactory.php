@@ -1,14 +1,11 @@
 <?php
 
+namespace Auth\Service\Factory;
 
-namespace App\Service\Factory;
-
-
-use App\Service\AuthAdapter;
+use Auth\Service\AuthAdapter;
 use Interop\Container\ContainerInterface;
-use Mezzio\Authentication\AuthenticationMiddleware;
-use Mezzio\Authorization\AuthorizationMiddleware;
 use Zend\ServiceManager\Factory\FactoryInterface;
+use Mezzio\Authentication\AuthenticationMiddleware;
 
 class AuthenticationMiddlewareFactory implements FactoryInterface
 {

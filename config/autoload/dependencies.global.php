@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Service\Factory\AuthenticationMiddlewareFactory;
-use App\Service\Factory\AuthorizationMiddlewareFactory;
+use Auth\Service\Factory\AuthenticationMiddlewareFactory;
 
 return [
     // Provides application-wide services.
@@ -23,7 +22,7 @@ return [
         ],
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories'  => [
-            \App\Service\AuthAdapter::class => \App\Service\Factory\AuthAdapterFactory::class,
+            \Auth\Service\AuthAdapter::class => \Auth\Service\Factory\AuthAdapterFactory::class,
             'doctrine.entity_manager.orm_default' => \ContainerInteropDoctrine\EntityManagerFactory::class,
             \Mezzio\Authentication\AuthenticationMiddleware::class => AuthenticationMiddlewareFactory::class,
         ],
