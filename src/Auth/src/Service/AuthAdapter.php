@@ -1,10 +1,9 @@
 <?php
 namespace Auth\Service;
 
-use Mezzio\Authentication\DefaultUser;
+use User\Entity\User;
 use Psr\Http\Message\ResponseInterface;
 use Mezzio\Authentication\UserInterface;
-use User\Entity\User;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Mezzio\Authentication\AuthenticationInterface;
@@ -75,7 +74,7 @@ class AuthAdapter implements AuthenticationInterface
         }
 
         // !Fixme когда передается неизвестная роль - вылетает exeption - No role with name "guests" could be found
-        return new AuthDefaultUser($user->getEmail(), $user->getRoles(), []);
+        return new AuthDefaultUser( $user->getEmail(), $user->getRoles(), [] );
     }
 
     /**

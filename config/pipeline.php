@@ -24,7 +24,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // all Exceptions.
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
-    $app->pipe(AuthenticationMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
     // - bootstrapping

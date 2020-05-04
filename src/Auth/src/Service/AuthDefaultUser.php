@@ -1,53 +1,72 @@
 <?php
 
-
 namespace Auth\Service;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Mezzio\Authentication\UserInterface;
 
-class AuthDefaultUser  implements UserInterface
+/**
+ * Class AuthDefaultUser
+ * @package Auth\Service
+ */
+final class AuthDefaultUser  implements UserInterface
 {
     /**
-     * @var string
+     * @access private
+     * @var string $identity -
      */
     private $identity;
 
     /**
-     * @var string[]
+     * @access private
+     * @var string[] $roles -
      */
     private $roles;
 
     /**
-     * @var array
+     * @access private
+     * @var array $details -
      */
     private $details;
 
-    public function __construct(string $identity, object $roles = null, array $details = [])
+    /**
+     * AuthDefaultUser constructor.
+     * @param string $identity
+     * @param object|null $roles
+     * @param array $details
+     */
+    public function __construct( string $identity, object $roles = null, array $details = [] )
     {
         $this->identity = $identity;
         $this->roles = $roles;
         $this->details = $details;
     }
 
+    /**
+     * @return string
+     */
     public function getIdentity() : string
     {
         return $this->identity;
     }
 
+    /**
+     * @return iterable
+     */
     public function getRoles() : iterable
     {
         return $this->roles;
     }
 
+    /**
+     * @return array
+     */
     public function getDetails() : array
     {
         return $this->details;
     }
 
     /**
-     * @param mixed $default Default value to return if no detail matching
-     *     $name is discovered.
+     * @param mixed $default Default value to return if no detail matching $name is discovered.
      * @return mixed
      */
     public function getDetail(string $name, $default = null)
