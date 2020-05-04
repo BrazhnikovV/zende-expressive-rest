@@ -13,8 +13,7 @@ class AuthorizationHandlerFactory
     public function __invoke(ContainerInterface $container) : AuthorizationHandler
     {
         $config = $container->get('config');
-//        echo var_dump($config['rbac']['roles']);
-//        exit();
+
         if (! isset($config['rbac']['roles'])) {
             throw new Exception('Rbac roles are not configured');
         }
