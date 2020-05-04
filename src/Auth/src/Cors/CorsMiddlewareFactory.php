@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Cors;
+namespace Auth\Cors;
 
 use Tuupola\Middleware\CorsMiddleware;
 
