@@ -13,6 +13,7 @@ return [
     'dependencies' => [
         'factories' => [
             App\Handler\Auth\AuthorizationHandler::class => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
+            Auth\Handler\Login\LoginHandler::class => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
         ],
     ],
 ];

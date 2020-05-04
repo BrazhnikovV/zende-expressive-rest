@@ -16,6 +16,7 @@ class AuthAdapterFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new AuthAdapter();
+        $em = $container->get('doctrine.entity_manager.orm_default');
+        return new AuthAdapter($em);
     }
 }

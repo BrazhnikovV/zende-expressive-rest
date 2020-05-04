@@ -14,10 +14,52 @@ use Mezzio\Authentication\AuthenticationInterface;
  * If such user exists, the service returns its identity (email). The identity
  * is saved to session and can be retrieved later with Identity view helper provided
  * by ZF3.
- * @package App\Service
+ * @package User\Service
  */
 class AuthAdapter implements AuthenticationInterface
 {
+    /**
+     * @access - private
+     * @var string $email - User email.
+     */
+    private $email;
+
+    /**
+     * @access - private
+     * @var string $password - Password
+     */
+    private $password;
+
+    /**
+     * @access - private
+     * @var Doctrine\ORM\EntityManager $em - Entity manager.
+     */
+    private $em;
+
+    /**
+     * Constructor.
+     * @param $entityManager
+     */
+    public function __construct($entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
+    /**
+     * Sets user email.
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * Sets password.
+     */
+    public function setPassword($password)
+    {
+        $this->password = (string)$password;
+    }
 
     /**
      * authenticate

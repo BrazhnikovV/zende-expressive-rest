@@ -7,7 +7,6 @@ namespace App\Handler;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use User\Entity\User;
 use Zend\Diactoros\Response\HtmlResponse;
 use Zend\Diactoros\Response\JsonResponse;
 use Zend\Expressive\Plates\PlatesRenderer;
@@ -27,29 +26,22 @@ class HomePageHandler implements RequestHandlerInterface
     /** @var null|TemplateRendererInterface */
     private $template;
 
-    /** @var null|TemplateRendererInterface */
-    private $em;
-
     public function __construct(
         string $containerName,
         Router\RouterInterface $router,
-        ?TemplateRendererInterface $template = null,
-        $entityManager
+        ?TemplateRendererInterface $template = null
     ) {
         $this->containerName = $containerName;
         $this->router        = $router;
         $this->template      = $template;
-        $this->em            = $entityManager;
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
-        $users = $this->em->getRepository(User::class)->findAll();
         if ($this->template === null) {
             return new JsonResponse([
                 'welcome' => 'Congratulations! You have installed the zend-expressive skeleton application.',
                 'docsUrl' => 'https://docs.zendframework.com/zend-expressive/',
-                'users'   => $users
             ]);
         }
 
