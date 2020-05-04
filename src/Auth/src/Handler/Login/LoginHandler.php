@@ -35,16 +35,24 @@ class LoginHandler implements RequestHandlerInterface
     private $userManager;
 
     /**
+     * @access private
+     * @var Auth\Service\JwtService $jwtService - JWT service.
+     */
+    private $jwtService;
+
+    /**
      * Constructor.
      * @param $entityManager
      * @param $authManager
      * @param $userManager
+     * @param $jwtService
      */
-    public function __construct( $entityManager, $authManager, $userManager )
+    public function __construct( $entityManager, $authManager, $userManager, $jwtService )
     {
         $this->entityManager = $entityManager;
         $this->authManager   = $authManager;
         $this->userManager   = $userManager;
+        $this->jwtService    = $jwtService;
     }
 
     /**
@@ -67,17 +75,19 @@ class LoginHandler implements RequestHandlerInterface
 
         // Validate form
         if( $form->isValid() ) {
-            return new JsonResponse([
-                'login' => 'action',
-                'form'  => $data
-            ]);
-        } else {
-            return new JsonResponse([
-                'errors' => $form->getMessages(),
-            ]);
-        }
+            $user = $this->authManager->login($data);
 
-//        echo var_dump($form->getMessages());
-//        exit();
+            if ( $user ) {
+                $token = $this->jwtService->generateJwt( $user );
+
+                return new JsonResponse([
+                    'form'  => $data,
+                    'data' => $token
+                ]);
+            } else
+                return new JsonResponse(['errors' => ['Неверное имя пользователя или пароль']]);
+        } else {
+            return new JsonResponse(['errors' => $form->getMessages()]);
+        }
     }
 }

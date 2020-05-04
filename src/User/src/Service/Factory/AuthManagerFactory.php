@@ -2,7 +2,6 @@
 namespace User\Service\Factory;
 
 use User\Service\AuthManager;
-use User\Service\RbacManager;
 use Zend\Session\SessionManager;
 use Interop\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
@@ -24,10 +23,8 @@ class AuthManagerFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // Instantiate dependencies.
-        $rbacManager = $container->get(RbacManager::class);
-
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
         // Instantiate the AuthManager service and inject dependencies to its constructor.
-        return new AuthManager($rbacManager);
+        return new AuthManager($entityManager);
     }
 }

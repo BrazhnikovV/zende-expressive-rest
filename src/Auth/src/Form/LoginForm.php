@@ -33,7 +33,7 @@ class LoginForm extends Form
 
         // Add input for "email" field
         $inputFilter->add([
-                'name'     => 'email',
+                'name'     => 'username',
                 'required' => true,
                 'filters'  => [
                     ['name' => 'StringTrim'],

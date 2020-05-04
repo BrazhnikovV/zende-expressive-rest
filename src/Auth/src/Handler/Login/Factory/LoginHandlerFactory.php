@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Auth\Handler\Login\Factory;
 
+use Auth\Service\JwtService;
 use User\Service\AuthManager;
 use User\Service\UserManager;
 use Auth\Handler\Login\LoginHandler;
@@ -24,7 +25,8 @@ class LoginHandlerFactory
         $entityManager = $container->get( 'doctrine.entity_manager.orm_default' );
         $authManager   = $container->get( AuthManager::class );
         $userManager   = $container->get( UserManager::class );
+        $jwtService    = $container->get( JwtService::class );
 
-        return new LoginHandler( $entityManager, $authManager, $userManager );
+        return new LoginHandler( $entityManager, $authManager, $userManager, $jwtService );
     }
 }

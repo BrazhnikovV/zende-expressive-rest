@@ -24,6 +24,7 @@ return [
         // Use 'factories' for services provided by callbacks/factory classes.
         'factories'  => [
             \User\Service\AuthManager::class => AuthManagerFactory::class,
+            \Auth\Service\JwtService::class => \Auth\Service\Factory\JwtServiceFactory::class,
             \User\Service\UserManager::class => \User\Service\Factory\UserManagerFactory::class,
             \User\Service\RbacManager::class => \User\Service\Factory\RbacManagerFactory::class,
             \User\Service\RoleManager::class => \User\Service\Factory\RoleManagerFactory::class,

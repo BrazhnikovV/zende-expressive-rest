@@ -1,7 +1,9 @@
 <?php
 namespace User\Service;
 
+use User\Entity\User;
 use Zend\Authentication\Result;
+use Zend\Crypt\Password\Bcrypt;
 
 /**
  * Class AuthManager - The AuthManager service is responsible for user's login/logout and simple access
@@ -18,36 +20,43 @@ class AuthManager
 
     /**
      * @access private
-     * @var User\Service\RbacManager $rbacManager - RBAC manager.
+     * @var Doctrine\ORM\EntityManager $entityManager -
      */
-    private $rbacManager;
+    private $entityManager;
 
     /**
      * AuthManager constructor.
-     * @param $authService
-     * @param $sessionManager
-     * @param $config
-     * @param $rbacManager
+     * @param $entityManager
      */
-    public function __construct($rbacManager)
+    public function __construct($entityManager)
     {
-        $this->rbacManager = $rbacManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
      * Performs a login attempt. If $rememberMe argument is true, it forces the session
      * to last for one month (otherwise the session expires on one hour).
-     * @param $email
-     * @param $password
-     * @param $rememberMe
-     * @return Result
-     * @throws \Exception
+     * @param $data
+     * @return array
      */
-    public function login($email, $password, $rememberMe)
+    public function login( $data )
     {
-        // Authenticate with login/password.
+        $user = $this->entityManager->getRepository(User::class)->findOneByEmail($data['username']);
+        // If the user with such email exists, we need to check if it is active or retired.
+        // Do not allow retired users to log in.
+        if ( $user == null ) {
+            return false;
+        }
+        if ( $user->getStatus() == User::STATUS_RETIRED ) {
+             return false;
+        }
 
-        return [];
+        $bcrypt = new Bcrypt();
+        $passwordHash = $user->getPassword();
+
+        if ( $bcrypt->verify( $data['password'], $passwordHash ) ) {
+            return $user;
+        }
     }
 
     /**
