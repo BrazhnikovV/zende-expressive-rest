@@ -68,26 +68,44 @@ class LoginHandler implements RequestHandlerInterface
 
         // Create login form
         $form = new LoginForm();
-        $data = json_decode($request->getBody()->getContents(), true);
-        // Fill in the form with POST data
+        $data = json_decode( $request->getBody()->getContents(), true );
 
-        $form->setData($data);
+        // Fill in the form with POST data
+        $form->setData( $data );
 
         // Validate form
         if( $form->isValid() ) {
             $user = $this->authManager->login($data);
 
             if ( $user ) {
-                $token = $this->jwtService->generateJwt( $user );
+                $accessToken = $this->jwtService->generateJwt( $user );
+                $refreshToken = $this->jwtService->generateJwt( $user );
 
                 return new JsonResponse([
-                    'form'  => $data,
-                    'data' => $token
+                    'lang'     => 'ru',
+                    'username' => $user->getEmail(),
+                    'access-token'      => $accessToken['token'],
+                    'access-token-exp'  => $accessToken['token_expired'],
+                    'refresh-token'     => $refreshToken['token'],
+                    'refresh-token-exp' => $refreshToken['token_expired']
                 ]);
             } else
-                return new JsonResponse(['errors' => ['Неверное имя пользователя или пароль']]);
+                $response = new JsonResponse([[
+                    'field'   => 'Ошибка',
+                    'message' => 'Неверное имя пользователя или пароль'
+                ]]);
+                return $response->withStatus(422);
         } else {
-            return new JsonResponse(['errors' => $form->getMessages()]);
+            $errors = [];
+            $errReturn = [];
+            $messages = $form->getMessages();
+            foreach ( $messages as $key => $message ) {
+                $errors['field'] = $key;
+                $errors['message'] = $message[ key( $message ) ];
+                $errReturn[] = $errors;
+            }
+            $response = new JsonResponse( $errReturn );
+            return $response->withStatus(422 );
         }
     }
 }

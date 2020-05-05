@@ -37,12 +37,20 @@ class AuthAdapter implements AuthenticationInterface
     private $em;
 
     /**
+     * @access private
+     * @var Auth\Service\JwtService $jwtService - JWT service.
+     */
+    private $jwtService;
+
+    /**
      * Constructor.
      * @param $entityManager
+     * @param $jwtService
      */
-    public function __construct($entityManager)
+    public function __construct( $entityManager, $jwtService )
     {
         $this->em = $entityManager;
+        $this->jwtService = $jwtService;
     }
 
     /**
@@ -68,13 +76,24 @@ class AuthAdapter implements AuthenticationInterface
      */
     public function authenticate( ServerRequestInterface $request ): ?UserInterface
     {
-        $user = $this->em->getRepository(User::class)->findOneById(1);
-        if ( $user == null ) {
-            throw new \Exception('There is no user with such identity');
-        }
+        $auth = $request->getHeaderLine('Authorization');
+        $token = explode('Bearer ', $auth );
+        if ( count($token) == 2 ) {
+            $verifyJwt = $this->jwtService->verifyJwt( $token[1] );
+            if ( $verifyJwt != false ) {
+                $user = $this->em->getRepository( User::class )->findOneByEmail( $verifyJwt->email );
 
-        // !Fixme когда передается неизвестная роль - вылетает exeption - No role with name "guests" could be found
-        return new AuthDefaultUser( $user->getEmail(), $user->getRoles(), [] );
+                if ( $user == null ) {
+                    throw new \Exception('There is no user with such identity');
+                }
+                // !Fixme когда передается неизвестная роль - вылетает exeption - No role with name "guests" could be found
+                return new AuthDefaultUser( $user->getEmail(), $user->getRoles(), [] );
+            } else {
+                return null;
+            }
+        } else {
+            throw new \Exception('There is no bearer Authorization');
+        }
     }
 
     /**

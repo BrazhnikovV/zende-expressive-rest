@@ -37,7 +37,7 @@ class AuthenticationHandler  implements MiddlewareInterface
      * @param RequestHandlerInterface $handler
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    public function process( ServerRequestInterface $request, RequestHandlerInterface $handler ): ResponseInterface
     {
         $user = $this->auth->authenticate($request);
         if (null !== $user) {

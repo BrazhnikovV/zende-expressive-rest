@@ -50,8 +50,8 @@ class JwtService
         $token = $base64Header . "." . $base64Payload . "." . $base64Signature;
 
         return [
-            'access_token' => $token,
-            'access_token_expired' => $expiry
+            'token' => $token,
+            'token_expired' => $expiry
         ];
     }
 
@@ -73,7 +73,11 @@ class JwtService
         $now = new DateTime();
         $expiry = new DateTime('@' . $decodedPayload->exp);
 
-        return hash_equals($signature, $newSignature) && ($now < $expiry);
+        if ( hash_equals($signature, $newSignature) && ($now < $expiry) ) {
+            return $decodedPayload;
+        } else {
+            return false;
+        }
     }
 
     /**
