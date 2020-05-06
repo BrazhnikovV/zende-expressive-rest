@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-use Auth\Handler\Auth\AuthenticationHandler;
 use Zend\Expressive\Application;
+use User\Handler\Role\RoleHandler;
+use User\Handler\Role\GetRoleHandler;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\MiddlewareFactory;
+use User\Handler\Role\CreateRoleHandler;
+use User\Handler\Role\UpdateRoleHandler;
 use Auth\Handler\Rbac\AuthorizationHandler;
+use Auth\Handler\Auth\AuthenticationHandler;
 
 /**
  * Setup routes with a single request method:
@@ -38,9 +42,13 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->post('/login', Auth\Handler\Login\LoginHandler::class, 'login');
     $app->get('/api/ping',
-        [
-            AuthenticationHandler::class,
-            AuthorizationHandler::class,
-            App\Handler\PingHandler::class
-        ], 'api.ping');
+    [
+        AuthenticationHandler::class,
+        AuthorizationHandler::class,
+        App\Handler\PingHandler::class
+    ], 'api.ping');
+
+    $app->get('/api/roles', [GetRoleHandler::class], 'api.roles');
+    $app->post('/api/create-role', [CreateRoleHandler::class], 'api.create-role');
+    $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'api.update-role');
 };

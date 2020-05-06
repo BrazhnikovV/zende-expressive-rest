@@ -15,6 +15,12 @@ return [
             App\Handler\Auth\AuthorizationHandler::class => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
             Auth\Handler\Auth\AuthenticationHandler::class => Auth\Handler\Auth\Factory\AuthenticationHandlerFactory::class,
             Auth\Handler\Login\LoginHandler::class => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
+
+            User\Handler\Permission\PermissionHandler::class => User\Handler\Permission\Factory\PermissionHandlerFactory::class,
+
+            User\Handler\Role\GetRoleHandler::class    => User\Handler\Role\Factory\GetRoleHandlerFactory::class,
+            User\Handler\Role\CreateRoleHandler::class => User\Handler\Role\Factory\CreateRoleHandlerFactory::class,
+            User\Handler\Role\UpdateRoleHandler::class => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
         ],
     ],
 ];
