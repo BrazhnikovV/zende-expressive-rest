@@ -15,7 +15,7 @@ class GetRoleHandlerFactory
 {
     /**
      * @param ContainerInterface $container
-     * @return RoleHandler
+     * @return GetRoleHandler
      */
     public function __invoke( ContainerInterface $container ) : GetRoleHandler
     {
