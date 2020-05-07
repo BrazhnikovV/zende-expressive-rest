@@ -5,6 +5,7 @@ declare(strict_types=1);
 use User\Handler\Permission\CreatePermissionHandler;
 use User\Handler\Permission\GetPermissionHandler;
 use User\Handler\Permission\UpdatePermissionHandler;
+use User\Handler\Role\DeleteRoleHandler;
 use Zend\Expressive\Application;
 use User\Handler\Role\RoleHandler;
 use User\Handler\Role\GetRoleHandler;
@@ -54,6 +55,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/roles', [GetRoleHandler::class], 'api.roles');
     $app->post('/api/create-role', [CreateRoleHandler::class], 'api.create-role');
     $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'api.update-role');
+    $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'api.delete-role');
 
     $app->get('/api/permissions', [GetPermissionHandler::class], 'api.permissions');
     $app->post('/api/create-permission', [CreatePermissionHandler::class], 'api.create-permission');

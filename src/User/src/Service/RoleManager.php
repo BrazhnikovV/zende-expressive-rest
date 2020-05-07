@@ -97,15 +97,18 @@ class RoleManager
 
     /**
      * Deletes the given role.
-     * @param $role - сущность роли
+     * @param $role
+     * @return mixed
      */
-    public function deleteRole($role)
+    public function deleteRole( $role )
     {
         $this->entityManager->remove($role);
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $role;
     }
 
     /**
