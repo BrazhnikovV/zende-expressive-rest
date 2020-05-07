@@ -74,8 +74,7 @@ class RbacManager
 
             $rbac->setCreateMissingRoles(true);
 
-            $roles = $this->entityManager->getRepository(Role::class)
-                    ->findBy([], ['id'=>'ASC']);
+            $roles = $this->entityManager->getRepository(Role::class)->findBy([], ['id'=>'ASC']);
             foreach ($roles as $role) {
 
                 $roleName = $role->getName();

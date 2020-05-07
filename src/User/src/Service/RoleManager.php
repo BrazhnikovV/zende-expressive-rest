@@ -10,14 +10,14 @@ use User\Entity\Permission;
 class RoleManager
 {
     /**
-     * Doctrine entity manager.
-     * @var Doctrine\ORM\EntityManager
+     * @access private
+     * @var Doctrine\ORM\EntityManager $entityManager - Doctrine entity manager.
      */
     private $entityManager;
 
     /**
-     * RBAC manager.
-     * @var User\Service\RbacManager
+     * @access private
+     * @var User\Service\RbacManager $rbacManager - RBAC manager.
      */
     private $rbacManager;
 
@@ -27,84 +27,71 @@ class RoleManager
     public function __construct($entityManager, $rbacManager)
     {
         $this->entityManager = $entityManager;
-        $this->rbacManager = $rbacManager;
+        $this->rbacManager   = $rbacManager;
     }
 
     /**
      * Adds a new role.
-     * @param array $data
+     * @param $data
+     * @return Role
+     * @throws \Exception
      */
-    public function addRole($data)
+    public function addRole( $data )
     {
-        $existingRole = $this->entityManager->getRepository(Role::class)
-                ->findOneByName($data['name']);
-        if ($existingRole!=null) {
+        $existingRole = $this->entityManager->getRepository( Role::class )->findOneByName( $data['name'] );
+        if ( $existingRole != null ) {
             throw new \Exception('Role with such name already exists');
         }
 
         $role = new Role;
-        $role->setName($data['name']);
-        $role->setDescription($data['description']);
-        $role->setDateCreated(date('Y-m-d H:i:s'));
+        $role->setName( $data['name'] );
+        $role->setDescription( $data['description'] );
 
         // add parent roles to inherit
-        $inheritedRoles = $data['inherit_roles'];
-        if (!empty($inheritedRoles)) {
-            foreach ($inheritedRoles as $roleId) {
-                $parentRole = $this->entityManager->getRepository(Role::class)
-                    ->findOneById($roleId);
+        $role = $this->addParentRolesToInherit( $data, $role );
 
-                if ($parentRole == null) {
-                    throw new \Exception('Role to inherit not found');
-                }
-
-                if (!$role->getParentRoles()->contains($parentRole)) {
-                    $role->addParent($parentRole);
-                }
-            }
-        }
-
-        $this->entityManager->persist($role);
+        $this->entityManager->persist( $role );
 
         // Apply changes to database.
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $role;
     }
 
     /**
      * Updates an existing role.
-     * @param Role $role
-     * @param array $data
+     * @param $role
+     * @param $data
+     * @throws \Exception
      */
-    public function updateRole($role, $data)
+    public function updateRole( $role, $data )
     {
-        $existingRole = $this->entityManager->getRepository(Role::class)
-                ->findOneByName($data['name']);
-        if ($existingRole!=null && $existingRole!=$role) {
+        $existingRole = $this->entityManager->getRepository( Role::class )->findOneByName( $data['name'] );
+        if ( $existingRole != null && $existingRole != $role ) {
             throw new \Exception('Another role with such name already exists');
         }
 
-        $role->setName($data['name']);
-        $role->setDescription($data['description']);
+        $role->setName( $data['name'] );
+        $role->setDescription( $data['description'] );
 
         // clear parent roles so we don't populate database twice
         $role->clearParentRoles();
 
         // add the new parent roles to inherit
         $inheritedRoles = $data['inherit_roles'];
-        if (!empty($inheritedRoles)) {
-            foreach ($inheritedRoles as $roleId) {
-                $parentRole = $this->entityManager->getRepository(Role::class)
-                    ->findOneById($roleId);
+        if ( !empty($inheritedRoles ) ) {
+            foreach ( $inheritedRoles as $roleId ) {
+                $parentRole = $this->entityManager->getRepository( Role::class )->findOneById( $roleId );
 
-                if ($parentRole == null) {
-                    throw new \Exception('Role to inherit not found');
+                if ( $parentRole == null ) {
+                    throw new \Exception('Role to inherit not found' );
                 }
 
-                if (!$role->getParentRoles()->contains($parentRole)) {
-                    $role->addParent($parentRole);
+                if ( !$role->getParentRoles()->contains( $parentRole ) ) {
+                    $role->addParent( $parentRole );
                 }
             }
         }
@@ -243,8 +230,11 @@ class RoleManager
 
     /**
      * Updates permissions of a role.
+     * @param $role
+     * @param $data
+     * @throws \Exception
      */
-    public function updateRolePermissions($role, $data)
+    public function updateRolePermissions( $role, $data )
     {
         // Remove old permissions.
         $role->getPermissions()->clear();
@@ -268,6 +258,35 @@ class RoleManager
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+    }
+
+    /**
+     * addParentRolesToInherit
+     * @param $data - данные формы
+     * @param $role - сущность создаваемой роли
+     * @return mixed
+     * @throws \Exception
+     */
+    private function addParentRolesToInherit( $data, $role )
+    {
+        if ( array_key_exists( 'inherit_roles', $data ) ) {
+            $inheritedRoles = $data['inherit_roles'];
+            if ( !empty( $inheritedRoles ) ) {
+                foreach ( $inheritedRoles as $roleId ) {
+                    $parentRole = $this->entityManager->getRepository( Role::class )->findOneById( $roleId );
+
+                    if ( $parentRole == null ) {
+                        throw new \Exception('Role to inherit not found');
+                    }
+
+                    if ( !$role->getParentRoles()->contains( $parentRole ) ) {
+                        $role->addParent( $parentRole );
+                    }
+                }
+            }
+        }
+
+        return $role;
     }
 }
 

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace User;
 
+use User\Filter\FormErrorFilter;
+use Zend\ServiceManager\Factory\InvokableFactory;
+
 /**
  * The configuration provider for the User module
  *
@@ -32,6 +35,7 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+                FormErrorFilter::class => InvokableFactory::class
             ],
             'factories'  => [
 

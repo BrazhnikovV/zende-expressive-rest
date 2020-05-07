@@ -11,16 +11,16 @@ class RoleRepository extends EntityRepository
 {
     /**
      * Retrieves all roles in descending dateCreated order.
-     * @return Query
+     * @return array
      */
     public function findAllRoles()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
 
         $queryBuilder->select('r')
-            ->from(\User\Entity\Role::class, 'r')
-            ->orderBy('r.dateCreated', 'DESC');
+            ->from(\User\Entity\Role::class, 'r');
+            //->orderBy('r.dateCreated', 'DESC');
 
-        return $queryBuilder->getQuery();
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 }

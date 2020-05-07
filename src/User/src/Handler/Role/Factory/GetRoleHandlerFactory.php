@@ -19,6 +19,7 @@ class GetRoleHandlerFactory
      */
     public function __invoke( ContainerInterface $container ) : GetRoleHandler
     {
-        return new GetRoleHandler();
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
+        return new GetRoleHandler( $entityManager );
     }
 }
