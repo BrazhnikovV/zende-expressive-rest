@@ -46,7 +46,6 @@ class CreateRoleHandler implements RequestHandlerInterface
         $this->roleManager     = $roleManager;
         $this->formErrorFilter = $formErrorFilter;
         $this->entityManager   = $entityManager;
-        $this->formErrorFilter = new FormErrorFilter();
     }
 
     /**

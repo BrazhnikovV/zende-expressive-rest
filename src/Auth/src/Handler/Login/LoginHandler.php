@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Auth\Handler\Login;
 
 use Auth\Form\LoginForm;
+use User\Filter\FormErrorFilter;
 use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class LoginHandler
@@ -41,18 +42,26 @@ class LoginHandler implements RequestHandlerInterface
     private $jwtService;
 
     /**
-     * Constructor.
-     * @param $entityManager
-     * @param $authManager
-     * @param $userManager
-     * @param $jwtService
+     * @access private
+     * @var User\Filter\FormErrorFilter $formErrorFilter - фильтр для преобразования массива ошибок формы
      */
-    public function __construct( $entityManager, $authManager, $userManager, $jwtService )
+    private $formErrorFilter;
+
+    /**
+     * LoginHandler constructor.
+     * @param $entityManager - менеджер сущностей
+     * @param $authManager - менеджер аутентификации
+     * @param $userManager - менеджер пользователей
+     * @param $jwtService - сервис для работы с токенами jwt
+     * @param $formErrorFilter - фильтр для преобразования ошибок валидации
+     */
+    public function __construct( $entityManager, $authManager, $userManager, $jwtService, $formErrorFilter )
     {
-        $this->entityManager = $entityManager;
-        $this->authManager   = $authManager;
-        $this->userManager   = $userManager;
-        $this->jwtService    = $jwtService;
+        $this->entityManager   = $entityManager;
+        $this->authManager     = $authManager;
+        $this->userManager     = $userManager;
+        $this->jwtService      = $jwtService;
+        $this->formErrorFilter = $formErrorFilter;
     }
 
     /**
@@ -78,7 +87,7 @@ class LoginHandler implements RequestHandlerInterface
             $user = $this->authManager->login($data);
 
             if ( $user ) {
-                $accessToken = $this->jwtService->generateJwt( $user );
+                $accessToken  = $this->jwtService->generateJwt( $user );
                 $refreshToken = $this->jwtService->generateJwt( $user );
 
                 return new JsonResponse([
@@ -96,15 +105,9 @@ class LoginHandler implements RequestHandlerInterface
                 ]]);
                 return $response->withStatus(422);
         } else {
-            $errors = [];
-            $errReturn = [];
-            $messages = $form->getMessages();
-            foreach ( $messages as $key => $message ) {
-                $errors['field'] = $key;
-                $errors['message'] = $message[ key( $message ) ];
-                $errReturn[] = $errors;
-            }
-            $response = new JsonResponse( $errReturn );
+            $response = new JsonResponse(
+                $this->formErrorFilter->filter( $form->getMessages() )
+            );
             return $response->withStatus(422 );
         }
     }

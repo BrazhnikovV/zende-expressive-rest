@@ -21,10 +21,9 @@ class CreateRoleHandlerFactory
      */
     public function __invoke( ContainerInterface $container ) : CreateRoleHandler
     {
-        $roleManager     = $container->get( RoleManager::class );
-        $entityManager   = $container->get('doctrine.entity_manager.orm_default');
-        $formErrorFilter = $container->get( FormErrorFilter::class );
+        $roleManager   = $container->get( RoleManager::class );
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
 
-        return new CreateRoleHandler( $roleManager, $formErrorFilter, $entityManager );
+        return new CreateRoleHandler( $roleManager, new FormErrorFilter(), $entityManager );
     }
 }
