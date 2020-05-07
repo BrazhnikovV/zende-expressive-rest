@@ -81,7 +81,7 @@ class RoleManager
         $role->setName( $data['name'] );
         $role->setDescription( $data['description'] );
 
-        // clear parent roles so we don't populate database twice
+        // clear parent roles, so we don't populate a database twice
         $role->clearParentRoles();
 
         // add the new parent roles to inherit
@@ -195,23 +195,24 @@ class RoleManager
 
     /**
      * Retrieves all permissions from the given role and its child roles.
-     * @param Role $role
+     * @param $role
+     * @return array
      */
-    public function getEffectivePermissions($role)
+    public function getEffectivePermissions( $role )
     {
         $effectivePermissions = [];
 
-        foreach ($role->getParentRoles() as $parentRole)
+        foreach ( $role->getParentRoles() as $parentRole )
         {
-            $parentPermissions = $this->getEffectivePermissions($parentRole);
-            foreach ($parentPermissions as $name=>$inherited) {
+            $parentPermissions = $this->getEffectivePermissions( $parentRole );
+            foreach ( $parentPermissions as $name=>$inherited ) {
                 $effectivePermissions[$name] = 'inherited';
             }
         }
 
-        foreach ($role->getPermissions() as $permission)
+        foreach ( $role->getPermissions() as $permission )
         {
-            if (!isset($effectivePermissions[$permission->getName()])) {
+            if ( !isset( $effectivePermissions[$permission->getName()] ) ) {
                 $effectivePermissions[$permission->getName()] = 'own';
             }
         }
@@ -221,8 +222,8 @@ class RoleManager
 
     /**
      * Updates permissions of a role.
-     * @param $role
-     * @param $data
+     * @param $role - сущность роли
+     * @param $data - данные формы
      * @throws \Exception
      */
     public function updateRolePermissions( $role, $data )
@@ -235,20 +236,19 @@ class RoleManager
             if (!$isChecked)
                 continue;
 
-            $permission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($name);
-            if ($permission == null) {
+            $permission = $this->entityManager->getRepository( Permission::class )->findOneByName( $name );
+            if ( $permission == null ) {
                 throw new \Exception('Permission with such name doesn\'t exist');
             }
 
-            $role->getPermissions()->add($permission);
+            $role->getPermissions()->add( $permission );
         }
 
         // Apply changes to database.
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
     }
 
     /**
