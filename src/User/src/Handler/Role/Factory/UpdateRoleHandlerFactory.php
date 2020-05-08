@@ -23,6 +23,7 @@ class UpdateRoleHandlerFactory
     {
         $roleManager   = $container->get( RoleManager::class );
         $entityManager = $container->get('doctrine.entity_manager.orm_default');
+
         return new UpdateRoleHandler( $roleManager, new FormErrorFilter(), $entityManager );
     }
 }

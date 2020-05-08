@@ -56,6 +56,12 @@ class UpdatePermissionHandler implements RequestHandlerInterface
     {
         $id = (int) $request->getAttribute("id" );
         $permission = $this->entityManager->getRepository( Permission::class )->findOneById( $id );
+
+        if ( $permission == null ) {
+            $response = new JsonResponse(['success' => false, 'id' => $id]);
+            return $response->withStatus(422 );
+        }
+
         $data = json_decode( $request->getBody()->getContents(), true );
         $form = new PermissionForm('update', $this->entityManager, $permission );
 
@@ -65,7 +71,6 @@ class UpdatePermissionHandler implements RequestHandlerInterface
         if( $form->isValid() ) {
 
             $permission = $this->permissionManager->updatePermission( $permission, $data );
-
             return new JsonResponse([
                 'name' => $permission->getName(),
                 'description' => $permission->getDescription()

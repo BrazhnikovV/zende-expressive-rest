@@ -56,6 +56,12 @@ class UpdateRoleHandler implements RequestHandlerInterface
     {
         $id   = (int) $request->getAttribute("id" );
         $role = $this->entityManager->getRepository( Role::class )->findOneById( $id );
+
+        if ( $role == null ) {
+            $response = new JsonResponse(['success' => false, 'id' => $id]);
+            return $response->withStatus(422 );
+        }
+
         $data = json_decode( $request->getBody()->getContents(), true );
         $form = new RoleForm('update', $this->entityManager, $role );
 
