@@ -47,8 +47,13 @@ class DeleteRoleHandler implements RequestHandlerInterface
     {
         $id   = (int) $request->getAttribute("id" );
         $role = $this->entityManager->getRepository( Role::class )->findOneById( $id );
-        $this->roleManager->deleteRole( $role );
 
-        return new JsonResponse(['success' => true, 'id' => $id]);
+        if ( $role != null ) {
+            $this->roleManager->deleteRole( $role );
+            return new JsonResponse(['success' => true, 'id' => $id]);
+        } else {
+            $response = new JsonResponse(['success' => false, 'id' => $id]);
+            return $response->withStatus(422 );
+        }
     }
 }

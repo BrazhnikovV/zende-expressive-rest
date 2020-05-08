@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace User\Handler\Permission\Factory;
 
+use User\Service\PermissionManager;
 use Psr\Container\ContainerInterface;
 use User\Handler\Permission\DeletePermissionHandler;
 
@@ -19,6 +20,9 @@ class DeletePermissionHandlerFactory
      */
     public function __invoke( ContainerInterface $container ) : DeletePermissionHandler
     {
-        return new DeletePermissionHandler();
+        $permissionManager = $container->get( PermissionManager::class );
+        $entityManager     = $container->get('doctrine.entity_manager.orm_default');
+
+        return new DeletePermissionHandler( $permissionManager, $entityManager );
     }
 }

@@ -83,15 +83,19 @@ class PermissionManager
     }
 
     /**
-     * Deletes the given permission.
+     * deletePermission - Deletes the given permission.
+     * @param $permission
+     * @return mixed
      */
-    public function deletePermission($permission)
+    public function deletePermission( $permission )
     {
-        $this->entityManager->remove($permission);
+        $this->entityManager->remove( $permission );
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
+
+        return $permission;
     }
 
     /**
@@ -99,9 +103,8 @@ class PermissionManager
      */
     public function createDefaultPermissionsIfNotExist()
     {
-        $permission = $this->entityManager->getRepository(Permission::class)
-                ->findOneBy([]);
-        if ($permission!=null)
+        $permission = $this->entityManager->getRepository( Permission::class )->findOneBy([]);
+        if ( $permission != null )
             return; // Some permissions already exist; do nothing.
 
         $defaultPermissions = [
@@ -113,19 +116,18 @@ class PermissionManager
             'api.ping' => 'View test answer',
         ];
 
-        foreach ($defaultPermissions as $name=>$description) {
+        foreach ( $defaultPermissions as $name => $description ) {
             $permission = new Permission();
-            $permission->setName($name);
-            $permission->setDescription($description);
-            $permission->setDateCreated(date('Y-m-d H:i:s'));
+            $permission->setName( $name );
+            $permission->setDescription( $description );
 
-            $this->entityManager->persist($permission);
+            $this->entityManager->persist( $permission );
         }
 
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
     }
 }
 
