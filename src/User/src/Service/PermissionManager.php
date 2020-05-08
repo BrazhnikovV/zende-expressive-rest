@@ -21,7 +21,9 @@ class PermissionManager
     private $rbacManager;
 
     /**
-     * Constructs the service.
+     * PermissionManager constructor.
+     * @param $entityManager
+     * @param $rbacManager
      */
     public function __construct($entityManager, $rbacManager)
     {
@@ -30,28 +32,29 @@ class PermissionManager
     }
 
     /**
-     * Adds a new permission.
-     * @param array $data
+     * addPermission - Adds a new permission.
+     * @param $data
+     * @return Permission
+     * @throws \Exception
      */
-    public function addPermission($data)
+    public function addPermission( $data )
     {
-        $existingPermission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($data['name']);
-        if ($existingPermission!=null) {
+        $existingPermission = $this->entityManager->getRepository( Permission::class )->findOneByName($data['name']);
+        if ( $existingPermission != null ) {
             throw new \Exception('Permission with such name already exists');
         }
 
         $permission = new Permission();
         $permission->setName($data['name']);
         $permission->setDescription($data['description']);
-        $permission->setDateCreated(date('Y-m-d H:i:s'));
 
         $this->entityManager->persist($permission);
-
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $permission;
     }
 
     /**

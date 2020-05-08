@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace User\Handler\Role;
 
 use User\Form\RoleForm;
-use User\Filter\FormErrorFilter;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;

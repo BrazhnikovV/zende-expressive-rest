@@ -60,4 +60,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/permissions', [GetPermissionHandler::class], 'api.permissions');
     $app->post('/api/create-permission', [CreatePermissionHandler::class], 'api.create-permission');
     $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'api.update-permission');
+    $app->delete('/api/delete-permission/{id}', [DeleteRoleHandler::class], 'api.delete-permission');
 };

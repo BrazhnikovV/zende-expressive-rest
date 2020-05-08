@@ -96,9 +96,13 @@ class Permission
         return $this->dateCreated;
     }
 
-    public function setDateCreated($dateCreated)
+    /**
+     * setDateUpdated - Устанавливает дату создания данной привилегии.
+     * @ORM\PrePersist
+     */
+    public function setDateCreated()
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = date('Y-m-d H:i:s');
     }
 
     /**
