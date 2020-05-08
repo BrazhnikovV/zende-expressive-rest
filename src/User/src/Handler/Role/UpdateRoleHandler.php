@@ -37,9 +37,9 @@ class UpdateRoleHandler implements RequestHandlerInterface
 
     /**
      * CreateRoleHandler constructor.
-     * @param $roleManager
-     * @param $formErrorFilter
-     * @param $entityManager
+     * @param $roleManager - менеджер ролей
+     * @param $formErrorFilter - фильтр для преобразования массива ошибок формы
+     * @param $entityManager - менеджер сущностей
      */
     public function __construct( $roleManager, $formErrorFilter, $entityManager )
     {

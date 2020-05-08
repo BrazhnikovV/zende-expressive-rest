@@ -58,16 +58,17 @@ class PermissionManager
     }
 
     /**
-     * Updates an existing permission.
-     * @param Permission $permission
-     * @param array $data
+     * updatePermission - Updates an existing permission.
+     * @param $permission - сущность привилегии
+     * @param $data - данные формы
+     * @return mixed
+     * @throws \Exception
      */
-    public function updatePermission($permission, $data)
+    public function updatePermission( $permission, $data )
     {
-        $existingPermission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($data['name']);
-        if ($existingPermission!=null && $existingPermission!=$permission) {
-            throw new \Exception('Another permission with such name already exists');
+        $existingPermission = $this->entityManager->getRepository( Permission::class )->findOneByName( $data['name'] );
+        if ( $existingPermission != null && $existingPermission != $permission ) {
+            throw new \Exception('Another permission with such name already exists' );
         }
 
         $permission->setName($data['name']);
@@ -77,6 +78,8 @@ class PermissionManager
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $permission;
     }
 
     /**
