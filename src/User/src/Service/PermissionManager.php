@@ -21,7 +21,9 @@ class PermissionManager
     private $rbacManager;
 
     /**
-     * Constructs the service.
+     * PermissionManager constructor.
+     * @param $entityManager
+     * @param $rbacManager
      */
     public function __construct($entityManager, $rbacManager)
     {
@@ -30,41 +32,43 @@ class PermissionManager
     }
 
     /**
-     * Adds a new permission.
-     * @param array $data
+     * addPermission - Adds a new permission.
+     * @param $data
+     * @return Permission
+     * @throws \Exception
      */
-    public function addPermission($data)
+    public function addPermission( $data )
     {
-        $existingPermission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($data['name']);
-        if ($existingPermission!=null) {
+        $existingPermission = $this->entityManager->getRepository( Permission::class )->findOneByName($data['name']);
+        if ( $existingPermission != null ) {
             throw new \Exception('Permission with such name already exists');
         }
 
         $permission = new Permission();
         $permission->setName($data['name']);
         $permission->setDescription($data['description']);
-        $permission->setDateCreated(date('Y-m-d H:i:s'));
 
         $this->entityManager->persist($permission);
-
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $permission;
     }
 
     /**
-     * Updates an existing permission.
-     * @param Permission $permission
-     * @param array $data
+     * updatePermission - Updates an existing permission.
+     * @param $permission - сущность привилегии
+     * @param $data - данные формы
+     * @return mixed
+     * @throws \Exception
      */
-    public function updatePermission($permission, $data)
+    public function updatePermission( $permission, $data )
     {
-        $existingPermission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($data['name']);
-        if ($existingPermission!=null && $existingPermission!=$permission) {
-            throw new \Exception('Another permission with such name already exists');
+        $existingPermission = $this->entityManager->getRepository( Permission::class )->findOneByName( $data['name'] );
+        if ( $existingPermission != null && $existingPermission != $permission ) {
+            throw new \Exception('Another permission with such name already exists' );
         }
 
         $permission->setName($data['name']);
@@ -74,18 +78,24 @@ class PermissionManager
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $permission;
     }
 
     /**
-     * Deletes the given permission.
+     * deletePermission - Deletes the given permission.
+     * @param $permission
+     * @return mixed
      */
-    public function deletePermission($permission)
+    public function deletePermission( $permission )
     {
-        $this->entityManager->remove($permission);
+        $this->entityManager->remove( $permission );
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
+
+        return $permission;
     }
 
     /**
@@ -93,9 +103,8 @@ class PermissionManager
      */
     public function createDefaultPermissionsIfNotExist()
     {
-        $permission = $this->entityManager->getRepository(Permission::class)
-                ->findOneBy([]);
-        if ($permission!=null)
+        $permission = $this->entityManager->getRepository( Permission::class )->findOneBy([]);
+        if ( $permission != null )
             return; // Some permissions already exist; do nothing.
 
         $defaultPermissions = [
@@ -107,19 +116,18 @@ class PermissionManager
             'api.ping' => 'View test answer',
         ];
 
-        foreach ($defaultPermissions as $name=>$description) {
+        foreach ( $defaultPermissions as $name => $description ) {
             $permission = new Permission();
-            $permission->setName($name);
-            $permission->setDescription($description);
-            $permission->setDateCreated(date('Y-m-d H:i:s'));
+            $permission->setName( $name );
+            $permission->setDescription( $description );
 
-            $this->entityManager->persist($permission);
+            $this->entityManager->persist( $permission );
         }
 
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
     }
 }
 

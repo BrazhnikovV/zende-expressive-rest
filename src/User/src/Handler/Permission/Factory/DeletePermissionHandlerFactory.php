@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace User\Handler\Permission\Factory;
 
-use User\Filter\FormErrorFilter;
 use User\Service\PermissionManager;
 use Psr\Container\ContainerInterface;
-use User\Handler\Permission\UpdatePermissionHandler;
+use User\Handler\Permission\DeletePermissionHandler;
 
 /**
- * Class UpdatePermissionHandlerFactory
+ * Class DeletePermissionHandlerFactory
  * @package User\Handler\Permission\Factory
  */
-class UpdatePermissionHandlerFactory
+class DeletePermissionHandlerFactory
 {
     /**
      * @param ContainerInterface $container
-     * @return UpdatePermissionHandler
+     * @return DeletePermissionHandler
      */
-    public function __invoke( ContainerInterface $container ) : UpdatePermissionHandler
+    public function __invoke( ContainerInterface $container ) : DeletePermissionHandler
     {
         $permissionManager = $container->get( PermissionManager::class );
         $entityManager     = $container->get('doctrine.entity_manager.orm_default');
 
-        return new UpdatePermissionHandler( $permissionManager, new FormErrorFilter(), $entityManager );
+        return new DeletePermissionHandler( $permissionManager, $entityManager );
     }
 }

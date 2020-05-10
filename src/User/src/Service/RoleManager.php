@@ -5,136 +5,120 @@ use User\Entity\Role;
 use User\Entity\Permission;
 
 /**
- * This service is responsible for adding/editing roles.
+ * Class RoleManager - This service is responsible for adding/editing roles.
+ * @package User\Service
  */
 class RoleManager
 {
     /**
-     * Doctrine entity manager.
-     * @var Doctrine\ORM\EntityManager
+     * @access private
+     * @var Doctrine\ORM\EntityManager $entityManager - Doctrine entity manager.
      */
     private $entityManager;
 
     /**
-     * RBAC manager.
-     * @var User\Service\RbacManager
+     * @access private
+     * @var User\Service\RbacManager $rbacManager - RBAC manager.
      */
     private $rbacManager;
 
     /**
-     * Constructs the service.
+     * RoleManager constructor.
+     * @param $entityManager - менеджер сущностей
+     * @param $rbacManager - менеджер авторизации
      */
-    public function __construct($entityManager, $rbacManager)
+    public function __construct( $entityManager, $rbacManager )
     {
         $this->entityManager = $entityManager;
-        $this->rbacManager = $rbacManager;
+        $this->rbacManager   = $rbacManager;
     }
 
     /**
      * Adds a new role.
-     * @param array $data
+     * @param $data
+     * @return Role
+     * @throws \Exception
      */
-    public function addRole($data)
+    public function addRole( $data )
     {
-        $existingRole = $this->entityManager->getRepository(Role::class)
-                ->findOneByName($data['name']);
-        if ($existingRole!=null) {
+        $existingRole = $this->entityManager->getRepository( Role::class )->findOneByName( $data['name'] );
+        if ( $existingRole != null ) {
             throw new \Exception('Role with such name already exists');
         }
 
         $role = new Role;
-        $role->setName($data['name']);
-        $role->setDescription($data['description']);
-        $role->setDateCreated(date('Y-m-d H:i:s'));
+        $role->setName( $data['name'] );
+        $role->setDescription( $data['description'] );
 
         // add parent roles to inherit
-        $inheritedRoles = $data['inherit_roles'];
-        if (!empty($inheritedRoles)) {
-            foreach ($inheritedRoles as $roleId) {
-                $parentRole = $this->entityManager->getRepository(Role::class)
-                    ->findOneById($roleId);
+        $role = $this->addParentRolesToInherit( $data, $role );
 
-                if ($parentRole == null) {
-                    throw new \Exception('Role to inherit not found');
-                }
-
-                if (!$role->getParentRoles()->contains($parentRole)) {
-                    $role->addParent($parentRole);
-                }
-            }
-        }
-
-        $this->entityManager->persist($role);
+        $this->entityManager->persist( $role );
 
         // Apply changes to database.
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $role;
     }
 
     /**
      * Updates an existing role.
-     * @param Role $role
-     * @param array $data
+     * @param $role - сущность роли
+     * @param $data - данные формы
+     * @return mixed
+     * @throws \Exception
      */
-    public function updateRole($role, $data)
+    public function updateRole( $role, $data )
     {
-        $existingRole = $this->entityManager->getRepository(Role::class)
-                ->findOneByName($data['name']);
-        if ($existingRole!=null && $existingRole!=$role) {
+        $existingRole = $this->entityManager->getRepository( Role::class )->findOneByName( $data['name'] );
+        if ( $existingRole != null && $existingRole != $role ) {
             throw new \Exception('Another role with such name already exists');
         }
 
-        $role->setName($data['name']);
-        $role->setDescription($data['description']);
+        $role->setName( $data['name'] );
+        $role->setDescription( $data['description'] );
 
-        // clear parent roles so we don't populate database twice
+        // clear parent roles, so we don't populate a database twice
         $role->clearParentRoles();
 
         // add the new parent roles to inherit
-        $inheritedRoles = $data['inherit_roles'];
-        if (!empty($inheritedRoles)) {
-            foreach ($inheritedRoles as $roleId) {
-                $parentRole = $this->entityManager->getRepository(Role::class)
-                    ->findOneById($roleId);
-
-                if ($parentRole == null) {
-                    throw new \Exception('Role to inherit not found');
-                }
-
-                if (!$role->getParentRoles()->contains($parentRole)) {
-                    $role->addParent($parentRole);
-                }
-            }
-        }
+        $role = $this->addParentRolesToInherit( $data, $role );
 
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $role;
     }
 
     /**
      * Deletes the given role.
+     * @param $role
+     * @return mixed
      */
-    public function deleteRole($role)
+    public function deleteRole( $role )
     {
         $this->entityManager->remove($role);
         $this->entityManager->flush();
 
         // Reload RBAC container.
         $this->rbacManager->init(true);
+
+        return $role;
     }
 
     /**
      * This method creates the default set of roles if no roles exist at all.
+     * @throws \Exception
      */
     public function createDefaultRolesIfNotExist()
     {
-        $role = $this->entityManager->getRepository(Role::class)
-                ->findOneBy([]);
-        if ($role!=null)
+        $role = $this->entityManager->getRepository( Role::class )->findOneBy([]);
+        if ( $role != null )
             return; // Some roles already exist; do nothing.
 
         $defaultRoles = [
@@ -179,32 +163,29 @@ class RoleManager
             ],
         ];
 
-        foreach ($defaultRoles as $name=>$info) {
+        foreach ( $defaultRoles as $name => $info ) {
 
             // Create new role
             $role = new Role();
-            $role->setName($name);
-            $role->setDescription($info['description']);
-            $role->setDateCreated(date('Y-m-d H:i:s'));
+            $role->setName( $name );
+            $role->setDescription( $info['description'] );
 
             // Assign parent role
-            if ($info['parent']!=null) {
-                $parentRole = $this->entityManager->getRepository(Role::class)
-                        ->findOneByName($info['parent']);
-                if ($parentRole==null) {
+            if ( $info['parent'] != null ) {
+                $parentRole = $this->entityManager->getRepository( Role::class )->findOneByName( $info['parent'] );
+                if ( $parentRole == null ) {
                     throw new \Exception('Parent role ' . $info['parent'] . ' doesn\'t exist');
                 }
 
-                $role->setParentRole($parentRole);
+                $role->setParentRole( $parentRole );
             }
 
-            $this->entityManager->persist($role);
+            $this->entityManager->persist( $role );
 
             // Assign permissions to role
-            $permissions = $this->entityManager->getRepository(Permission::class)
-                    ->findByName($info['permissions']);
-            foreach ($permissions as $permission) {
-                $role->getPermissions()->add($permission);
+            $permissions = $this->entityManager->getRepository( Permission::class )->findByName( $info['permissions'] );
+            foreach ( $permissions as $permission ) {
+                $role->getPermissions()->add( $permission );
             }
         }
 
@@ -217,23 +198,24 @@ class RoleManager
 
     /**
      * Retrieves all permissions from the given role and its child roles.
-     * @param Role $role
+     * @param $role
+     * @return array
      */
-    public function getEffectivePermissions($role)
+    public function getEffectivePermissions( $role )
     {
         $effectivePermissions = [];
 
-        foreach ($role->getParentRoles() as $parentRole)
+        foreach ( $role->getParentRoles() as $parentRole )
         {
-            $parentPermissions = $this->getEffectivePermissions($parentRole);
-            foreach ($parentPermissions as $name=>$inherited) {
+            $parentPermissions = $this->getEffectivePermissions( $parentRole );
+            foreach ( $parentPermissions as $name=>$inherited ) {
                 $effectivePermissions[$name] = 'inherited';
             }
         }
 
-        foreach ($role->getPermissions() as $permission)
+        foreach ( $role->getPermissions() as $permission )
         {
-            if (!isset($effectivePermissions[$permission->getName()])) {
+            if ( !isset( $effectivePermissions[$permission->getName()] ) ) {
                 $effectivePermissions[$permission->getName()] = 'own';
             }
         }
@@ -243,8 +225,11 @@ class RoleManager
 
     /**
      * Updates permissions of a role.
+     * @param $role - сущность роли
+     * @param $data - данные формы
+     * @throws \Exception
      */
-    public function updateRolePermissions($role, $data)
+    public function updateRolePermissions( $role, $data )
     {
         // Remove old permissions.
         $role->getPermissions()->clear();
@@ -254,20 +239,48 @@ class RoleManager
             if (!$isChecked)
                 continue;
 
-            $permission = $this->entityManager->getRepository(Permission::class)
-                ->findOneByName($name);
-            if ($permission == null) {
+            $permission = $this->entityManager->getRepository( Permission::class )->findOneByName( $name );
+            if ( $permission == null ) {
                 throw new \Exception('Permission with such name doesn\'t exist');
             }
 
-            $role->getPermissions()->add($permission);
+            $role->getPermissions()->add( $permission );
         }
 
         // Apply changes to database.
         $this->entityManager->flush();
 
         // Reload RBAC container.
-        $this->rbacManager->init(true);
+        $this->rbacManager->init( true );
+    }
+
+    /**
+     * addParentRolesToInherit
+     * @param $data - данные формы
+     * @param $role - сущность создаваемой роли
+     * @return mixed
+     * @throws \Exception
+     */
+    private function addParentRolesToInherit( $data, $role )
+    {
+        if ( array_key_exists( 'inherit_roles', $data ) ) {
+            $inheritedRoles = $data['inherit_roles'];
+            if ( !empty( $inheritedRoles ) ) {
+                foreach ( $inheritedRoles as $roleId ) {
+                    $parentRole = $this->entityManager->getRepository( Role::class )->findOneById( $roleId );
+
+                    if ( $parentRole == null ) {
+                        throw new \Exception('Role to inherit not found');
+                    }
+
+                    if ( !$role->getParentRoles()->contains( $parentRole ) ) {
+                        $role->addParent( $parentRole );
+                    }
+                }
+            }
+        }
+
+        return $role;
     }
 }
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace User;
 
 /**
- * The configuration provider for the User module
- *
+ * Class ConfigProvider - The configuration provider for the User module
+ * @package User
  * @see https://docs.zendframework.com/zend-component-installer/
  */
 class ConfigProvider
@@ -32,6 +32,7 @@ class ConfigProvider
     {
         return [
             'invokables' => [
+
             ],
             'factories'  => [
 

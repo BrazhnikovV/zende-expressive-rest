@@ -124,9 +124,13 @@ class Role
         return $this->dateCreated;
     }
 
-    public function setDateCreated($dateCreated)
+    /**
+     * setDateCreated - Устанавливает дату создания данной роли.
+     * @ORM\PrePersist
+     */
+    public function setDateCreated()
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = date('Y-m-d H:i:s');
     }
 
     /**
@@ -200,6 +204,3 @@ class Role
         return false;
     }
 }
-
-
-

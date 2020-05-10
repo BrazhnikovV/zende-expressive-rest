@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace User\Handler\Role\Factory;
 
-use User\Service\RoleManager;
-use User\Filter\FormErrorFilter;
 use Psr\Container\ContainerInterface;
-use User\Handler\Role\UpdateRoleHandler;
+use User\Filter\FormErrorFilter;
+use User\Handler\Role\DeleteRoleHandler;
+use User\Service\RoleManager;
 
 /**
- * Class UpdateRoleHandlerFactory
+ * Class DeleteRoleHandlerFactory
  * @package User\Handler\Role\Factory
  */
-class UpdateRoleHandlerFactory
+class DeleteRoleHandlerFactory
 {
     /**
      * @param ContainerInterface $container
-     * @return UpdateRoleHandler
+     * @return DeleteRoleHandler
      */
-    public function __invoke( ContainerInterface $container ) : UpdateRoleHandler
+    public function __invoke( ContainerInterface $container ) : DeleteRoleHandler
     {
         $roleManager   = $container->get( RoleManager::class );
         $entityManager = $container->get('doctrine.entity_manager.orm_default');
 
-        return new UpdateRoleHandler( $roleManager, new FormErrorFilter(), $entityManager );
+        return new DeleteRoleHandler( $roleManager, $entityManager );
     }
 }

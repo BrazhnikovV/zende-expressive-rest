@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace User\Handler\Role\Factory;
 
+use User\Service\RoleManager;
+use User\Filter\FormErrorFilter;
 use Psr\Container\ContainerInterface;
 use User\Handler\Role\CreateRoleHandler;
 
@@ -19,6 +21,9 @@ class CreateRoleHandlerFactory
      */
     public function __invoke( ContainerInterface $container ) : CreateRoleHandler
     {
-        return new CreateRoleHandler();
+        $roleManager   = $container->get( RoleManager::class );
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
+
+        return new CreateRoleHandler( $roleManager, new FormErrorFilter(), $entityManager );
     }
 }

@@ -20,6 +20,7 @@ class GetPermissionHandlerFactory
      */
     public function __invoke( ContainerInterface $container ) : GetPermissionHandler
     {
-        return new GetPermissionHandler();
+        $entityManager = $container->get('doctrine.entity_manager.orm_default');
+        return new GetPermissionHandler( $entityManager );
     }
 }
