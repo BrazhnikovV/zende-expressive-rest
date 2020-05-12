@@ -23,4 +23,20 @@ class RoleRepository extends EntityRepository
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
+
+    /**
+     * findRoleById - Retrieves one role
+     * @param $id
+     * @return array
+     */
+    public function findRoleById( $id )
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('r')
+            ->from(\User\Entity\Role::class, 'r')
+            ->where("r.id = ?1")
+            ->setParameter("1", $id);
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
 }

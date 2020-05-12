@@ -7,6 +7,7 @@ use User\Handler\Permission\DeletePermissionHandler;
 use User\Handler\Permission\GetPermissionHandler;
 use User\Handler\Permission\UpdatePermissionHandler;
 use User\Handler\Role\DeleteRoleHandler;
+use User\Handler\Role\GetRoleByIdHandler;
 use Zend\Expressive\Application;
 use User\Handler\Role\RoleHandler;
 use User\Handler\Role\GetRoleHandler;
@@ -54,6 +55,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     ], 'api.ping');
 
     $app->get('/api/roles', [GetRoleHandler::class], 'api.roles');
+    $app->get('/api/role/{id}', [GetRoleByIdHandler::class], 'api.get-role-by-id');
     $app->post('/api/create-role', [CreateRoleHandler::class], 'api.create-role');
     $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'api.update-role');
     $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'api.delete-role');

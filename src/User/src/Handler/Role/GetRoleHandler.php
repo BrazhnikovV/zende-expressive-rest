@@ -39,8 +39,6 @@ class GetRoleHandler implements RequestHandlerInterface
     {
         // !Fixme необходимо учитывать наличие пагинации на клиенте !!!
         $roles = $this->em->getRepository(Role::class)->findAllRoles();
-        return new JsonResponse(
-            $roles
-        );
+        return new JsonResponse( $roles );
     }
 }

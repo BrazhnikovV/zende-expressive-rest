@@ -38,8 +38,6 @@ class GetPermissionHandler implements RequestHandlerInterface
     public function handle( ServerRequestInterface $request ) : ResponseInterface
     {
         $permissions = $this->em->getRepository(Permission::class)->findAllPermissions();
-        return new JsonResponse([[
-            'permissions' => $permissions
-        ]]);
+        return new JsonResponse( $permissions );
     }
 }

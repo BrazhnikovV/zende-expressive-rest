@@ -21,10 +21,11 @@ return [
             User\Handler\Permission\GetPermissionHandler::class    => User\Handler\Permission\Factory\GetPermissionHandlerFactory::class,
             User\Handler\Permission\UpdatePermissionHandler::class => User\Handler\Permission\Factory\UpdatePermissionHandlerFactory::class,
 
-            User\Handler\Role\CreateRoleHandler::class => User\Handler\Role\Factory\CreateRoleHandlerFactory::class,
-            User\Handler\Role\DeleteRoleHandler::class => User\Handler\Role\Factory\DeleteRoleHandlerFactory::class,
-            User\Handler\Role\GetRoleHandler::class    => User\Handler\Role\Factory\GetRoleHandlerFactory::class,
-            User\Handler\Role\UpdateRoleHandler::class => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
+            User\Handler\Role\CreateRoleHandler::class  => User\Handler\Role\Factory\CreateRoleHandlerFactory::class,
+            User\Handler\Role\DeleteRoleHandler::class  => User\Handler\Role\Factory\DeleteRoleHandlerFactory::class,
+            User\Handler\Role\GetRoleByIdHandler::class => User\Handler\Role\Factory\GetRoleByIdHandlerFactory::class,
+            User\Handler\Role\GetRoleHandler::class     => User\Handler\Role\Factory\GetRoleHandlerFactory::class,
+            User\Handler\Role\UpdateRoleHandler::class  => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
         ],
     ],
 ];
