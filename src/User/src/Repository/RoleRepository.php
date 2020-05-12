@@ -35,7 +35,8 @@ class RoleRepository extends EntityRepository
         $queryBuilder->select('r')
             ->from(\User\Entity\Role::class, 'r')
             ->where("r.id = ?1")
-            ->setParameter("1", $id);
+            ->setParameter("1", $id)
+            ->getMaxResults(1);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

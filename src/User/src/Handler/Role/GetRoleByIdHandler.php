@@ -41,7 +41,7 @@ class GetRoleByIdHandler implements RequestHandlerInterface
         $role = $this->entityManager->getRepository( Role::class )->findRoleById($id);
 
         if ( $role != null ) {
-            return new JsonResponse($role);
+            return new JsonResponse($role[0]);
         } else {
             $response = new JsonResponse(['success' => false, 'id' => $id]);
             return $response->withStatus(422 );
