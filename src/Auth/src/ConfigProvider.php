@@ -25,7 +25,6 @@ class ConfigProvider
         return [
             'dependencies' => $this->getDependencies(),
             'templates'    => $this->getTemplates(),
-            'rbac'         => include __DIR__ . '/../../../config/autoload/authorization.local.php',
         ];
     }
 
