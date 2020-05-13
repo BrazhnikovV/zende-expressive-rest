@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use User\Handler\Permission\CreatePermissionHandler;
 use User\Handler\Permission\DeletePermissionHandler;
+use User\Handler\Permission\GetPermissionByIdHandler;
 use User\Handler\Permission\GetPermissionHandler;
 use User\Handler\Permission\UpdatePermissionHandler;
 use User\Handler\Role\DeleteRoleHandler;
@@ -44,6 +45,7 @@ use Auth\Handler\Auth\AuthenticationHandler;
  *     'contact'
  * );
  */
+
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container) : void {
     $app->get('/', App\Handler\HomePageHandler::class, 'home');
     $app->post('/login', Auth\Handler\Login\LoginHandler::class, 'login');
@@ -61,6 +63,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'api.delete-role');
 
     $app->get('/api/permissions', [GetPermissionHandler::class], 'api.permissions');
+    $app->get('/api/permission/{id}', [GetPermissionByIdHandler::class], 'api.get-permission-by-id');
     $app->post('/api/create-permission', [CreatePermissionHandler::class], 'api.create-permission');
     $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'api.update-permission');
     $app->delete('/api/delete-permission/{id}', [DeletePermissionHandler::class], 'api.delete-permission');

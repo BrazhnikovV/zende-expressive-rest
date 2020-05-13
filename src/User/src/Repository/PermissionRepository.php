@@ -19,7 +19,23 @@ class PermissionRepository extends EntityRepository
 
         $queryBuilder->select('p')
             ->from(Permission::class, 'p');
-            //->orderBy('p.dateCreated', 'DESC');
+
+        return $queryBuilder->getQuery()->getArrayResult();
+    }
+
+    /**
+     * findPermissionById - Retrieves one permission
+     * @param $id
+     * @return array
+     */
+    public function findPermissionById( $id )
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder();
+        $queryBuilder->select('p')
+            ->from(\User\Entity\Permission::class, 'p')
+            ->where("p.id = ?1")
+            ->setParameter("1", $id)
+            ->getMaxResults(1);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

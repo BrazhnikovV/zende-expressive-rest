@@ -12,14 +12,15 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\Auth\AuthorizationHandler::class => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
+            App\Handler\Auth\AuthorizationHandler::class   => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
             Auth\Handler\Auth\AuthenticationHandler::class => Auth\Handler\Auth\Factory\AuthenticationHandlerFactory::class,
-            Auth\Handler\Login\LoginHandler::class => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
+            Auth\Handler\Login\LoginHandler::class         => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
 
-            User\Handler\Permission\CreatePermissionHandler::class => User\Handler\Permission\Factory\CreatePermissionHandlerFactory::class,
-            User\Handler\Permission\DeletePermissionHandler::class => User\Handler\Permission\Factory\DeletePermissionHandlerFactory::class,
-            User\Handler\Permission\GetPermissionHandler::class    => User\Handler\Permission\Factory\GetPermissionHandlerFactory::class,
-            User\Handler\Permission\UpdatePermissionHandler::class => User\Handler\Permission\Factory\UpdatePermissionHandlerFactory::class,
+            User\Handler\Permission\CreatePermissionHandler::class  => User\Handler\Permission\Factory\CreatePermissionHandlerFactory::class,
+            User\Handler\Permission\DeletePermissionHandler::class  => User\Handler\Permission\Factory\DeletePermissionHandlerFactory::class,
+            User\Handler\Permission\GetPermissionByIdHandler::class => User\Handler\Permission\Factory\GetPermissionByIdHandlerFactory::class,
+            User\Handler\Permission\GetPermissionHandler::class     => User\Handler\Permission\Factory\GetPermissionHandlerFactory::class,
+            User\Handler\Permission\UpdatePermissionHandler::class  => User\Handler\Permission\Factory\UpdatePermissionHandlerFactory::class,
 
             User\Handler\Role\CreateRoleHandler::class  => User\Handler\Role\Factory\CreateRoleHandlerFactory::class,
             User\Handler\Role\DeleteRoleHandler::class  => User\Handler\Role\Factory\DeleteRoleHandlerFactory::class,
