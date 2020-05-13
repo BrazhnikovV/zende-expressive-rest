@@ -71,11 +71,12 @@ class UpdateRoleHandler implements RequestHandlerInterface
         if( $form->isValid() ) {
 
             $role = $this->roleManager->updateRole( $role, $data );
+            $this->roleManager->updateRolePermissions( $role, $data );
 
             return new JsonResponse([
                 'name' => $role->getName(),
                 'description' => $role->getDescription(),
-                'inherit_roles' => $role->getParentRoles()
+//                'inherit_roles' => $role->getParentRoles()
             ]);
         } else {
             $response = new JsonResponse(
