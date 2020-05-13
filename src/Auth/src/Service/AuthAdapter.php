@@ -73,6 +73,7 @@ class AuthAdapter implements AuthenticationInterface
      * authenticate
      * @param ServerRequestInterface $request
      * @return UserInterface|null
+     * @throws \Exception
      */
     public function authenticate( ServerRequestInterface $request ): ?UserInterface
     {
