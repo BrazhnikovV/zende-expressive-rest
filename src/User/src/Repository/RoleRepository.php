@@ -16,10 +16,8 @@ class RoleRepository extends EntityRepository
     public function findAllRoles()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-
         $queryBuilder->select('r')
             ->from(\User\Entity\Role::class, 'r');
-            //->orderBy('r.dateCreated', 'DESC');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
@@ -34,9 +32,10 @@ class RoleRepository extends EntityRepository
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('r')
             ->from(\User\Entity\Role::class, 'r')
+            ->leftJoin('r.permissions', 'p')
+            ->addSelect('p')
             ->where("r.id = ?1")
-            ->setParameter("1", $id)
-            ->getMaxResults(1);
+            ->setParameter("1", $id);
 
         return $queryBuilder->getQuery()->getArrayResult();
     }
