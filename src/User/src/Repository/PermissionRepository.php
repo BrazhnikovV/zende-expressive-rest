@@ -18,7 +18,8 @@ class PermissionRepository extends EntityRepository
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
 
         $queryBuilder->select('p')
-            ->from(Permission::class, 'p');
+            ->from(Permission::class, 'p')
+            ->orderBy('p.id', 'DESC');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

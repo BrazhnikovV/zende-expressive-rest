@@ -17,7 +17,8 @@ class RoleRepository extends EntityRepository
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
         $queryBuilder->select('r')
-            ->from(\User\Entity\Role::class, 'r');
+            ->from(\User\Entity\Role::class, 'r')
+            ->orderBy('r.id', 'DESC');
 
         return $queryBuilder->getQuery()->getArrayResult();
     }

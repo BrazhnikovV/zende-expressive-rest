@@ -56,15 +56,15 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         App\Handler\PingHandler::class
     ], 'api.ping');
 
-    $app->get('/api/roles', [GetRoleHandler::class], 'api.roles');
-    $app->get('/api/role/{id}', [GetRoleByIdHandler::class], 'api.get-role-by-id');
-    $app->post('/api/create-role', [CreateRoleHandler::class], 'api.create-role');
-    $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'api.update-role');
-    $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'api.delete-role');
+    $app->get('/api/roles', [GetRoleHandler::class], 'role.get');
+    $app->get('/api/role/{id}', [GetRoleByIdHandler::class], 'role.get-by-id');
+    $app->post('/api/create-role', [CreateRoleHandler::class], 'role.create');
+    $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'role.update');
+    $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'role.delete');
 
-    $app->get('/api/permissions', [GetPermissionHandler::class], 'api.permissions');
-    $app->get('/api/permission/{id}', [GetPermissionByIdHandler::class], 'api.get-permission-by-id');
-    $app->post('/api/create-permission', [CreatePermissionHandler::class], 'api.create-permission');
-    $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'api.update-permission');
-    $app->delete('/api/delete-permission/{id}', [DeletePermissionHandler::class], 'api.delete-permission');
+    $app->get('/api/permissions', [GetPermissionHandler::class], 'permission.get');
+    $app->get('/api/permission/{id}', [GetPermissionByIdHandler::class], 'permission.get-by-id');
+    $app->post('/api/create-permission', [CreatePermissionHandler::class], 'permission.create');
+    $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'permission.update');
+    $app->delete('/api/delete-permission/{id}', [DeletePermissionHandler::class], 'permission.delete');
 };
