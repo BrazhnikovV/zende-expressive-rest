@@ -29,10 +29,10 @@ class UserRepository extends EntityRepository
     public function findAllUsers()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u')
+        $queryBuilder->select('u.id, u.email, u.fullName')
             ->from(User::class, 'u')
             ->orderBy('u.dateCreated', 'DESC');
 
-        return $queryBuilder->getQuery();
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 }

@@ -29,6 +29,7 @@ return [
             User\Handler\Role\UpdateRoleHandler::class  => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
 
             User\Handler\User\CreateUserHandler::class => User\Handler\User\Factory\CreateUserHandlerFactory::class,
+            User\Handler\User\GetUsersHandler::class   => User\Handler\User\Factory\GetUsersHandlerFactory::class,
         ],
     ],
 ];

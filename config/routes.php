@@ -10,6 +10,7 @@ use User\Handler\Permission\UpdatePermissionHandler;
 use User\Handler\Role\DeleteRoleHandler;
 use User\Handler\Role\GetRoleByIdHandler;
 use User\Handler\User\CreateUserHandler;
+use User\Handler\User\GetUsersHandler;
 use Zend\Expressive\Application;
 use User\Handler\Role\RoleHandler;
 use User\Handler\Role\GetRoleHandler;
@@ -69,5 +70,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'permission.update');
     $app->delete('/api/delete-permission/{id}', [DeletePermissionHandler::class], 'permission.delete');
 
+    $app->get('/api/users', [GetUsersHandler::class], 'user.get');
     $app->post('/api/create-user', [CreateUserHandler::class], 'user.create');
 };
