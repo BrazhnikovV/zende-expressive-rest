@@ -79,7 +79,7 @@ class UserManager
         $user->setStatus($data['status']);
 
         // Assign roles to user.
-        $this->assignRoles( $user, $data['roles']);
+        $this->assignRoles( $user, $data['role']);
 
         // Add the entity to the entity manager.
         $this->entityManager->persist($user);

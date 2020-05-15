@@ -145,7 +145,7 @@ class UserForm extends Form
         // Add input for "roles" field
         $inputFilter->add([
                 'class'    => ArrayInput::class,
-                'name'     => 'roles',
+                'name'     => 'role',
                 'required' => true,
                 'filters'  => [                    
                     ['name' => 'ToInt'],

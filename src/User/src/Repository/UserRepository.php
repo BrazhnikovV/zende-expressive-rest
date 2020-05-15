@@ -5,7 +5,8 @@ use Doctrine\ORM\EntityRepository;
 use User\Entity\User;
 
 /**
- * This is the custom repository class for User entity.
+ * Class UserRepository - This is the custom repository class for User entity.
+ * @package User\Repository
  */
 class UserRepository extends EntityRepository
 {
