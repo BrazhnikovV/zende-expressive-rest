@@ -43,9 +43,13 @@ class UserManager
     private $config;
 
     /**
-     * Constructs the service.
+     * UserManager constructor
+     * @param $entityManager
+     * @param $roleManager
+     * @param $permissionManager
+     * @param $config
      */
-    public function __construct($entityManager, $roleManager, $permissionManager, $config)
+    public function __construct( $entityManager, $roleManager, $permissionManager, $config )
     {
         $this->entityManager = $entityManager;
         $this->roleManager = $roleManager;
@@ -72,14 +76,10 @@ class UserManager
         $bcrypt = new Bcrypt();
         $passwordHash = $bcrypt->create($data['password']);
         $user->setPassword($passwordHash);
-
         $user->setStatus($data['status']);
 
-        $currentDate = date('Y-m-d H:i:s');
-        $user->setDateCreated($currentDate);
-
         // Assign roles to user.
-        $this->assignRoles($user, $data['roles']);
+        $this->assignRoles( $user, $data['roles']);
 
         // Add the entity to the entity manager.
         $this->entityManager->persist($user);
@@ -116,21 +116,18 @@ class UserManager
     /**
      * A helper method which assigns new roles to the user.
      */
-    private function assignRoles($user, $roleIds)
+    private function assignRoles($user, $role)
     {
         // Remove old user role(s).
         $user->getRoles()->clear();
 
         // Assign new role(s).
-        foreach ($roleIds as $roleId) {
-            $role = $this->entityManager->getRepository(Role::class)
-                    ->find($roleId);
-            if ($role==null) {
-                throw new \Exception('Not found role by ID');
-            }
-
-            $user->addRole($role);
+        $role = $this->entityManager->getRepository(Role::class)->find($role['id']);
+        if ($role==null) {
+            throw new \Exception('Not found role by ID');
         }
+
+        $user->addRole($role);
     }
 
     /**

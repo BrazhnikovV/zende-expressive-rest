@@ -213,11 +213,11 @@ class User
 
     /**
      * Sets the date when this user was created.
-     * @param string $dateCreated
+     * @ORM\PrePersist
      */
-    public function setDateCreated($dateCreated)
+    public function setDateCreated()
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = date('Y-m-d H:i:s');
     }
 
     /**

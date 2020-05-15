@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace User\Handler\Role;
+namespace User\Handler\User;
 
-use User\Form\RoleForm;
+use User\Form\UserForm;
 use Psr\Http\Message\ResponseInterface;
 use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * Class CreateRoleHandler
- * @package User\Handler\Role
+ * Class CreateUserHandler
+ * @package User\Handler\User
  */
-class CreateRoleHandler implements RequestHandlerInterface
+class CreateUserHandler implements RequestHandlerInterface
 {
     /**
      * @access private
-     * @var User\Service\RoleManager $roleManager - менеджер ролей
+     * @var User\Service\UserManager $userManager - менеджер пользователей
      */
-    private $roleManager;
+    private $userManager;
 
     /**
      * @access private
@@ -35,14 +35,14 @@ class CreateRoleHandler implements RequestHandlerInterface
     private $entityManager;
 
     /**
-     * CreateRoleHandler constructor.
-     * @param $roleManager - менеджер ролей
-     * @param $formErrorFilter - фильтр для преобразования массива ошибок формы
+     * CreateUserHandler constructor.
+     * @param $userManager - сервис для работы с пользователями
      * @param $entityManager - менеджер сущностей
+     * @param $formErrorFilter - фильтр для преобразования массива ошибок формы
      */
-    public function __construct( $roleManager, $formErrorFilter, $entityManager )
+    public function __construct( $userManager, $entityManager, $formErrorFilter )
     {
-        $this->roleManager     = $roleManager;
+        $this->userManager     = $userManager;
         $this->formErrorFilter = $formErrorFilter;
         $this->entityManager   = $entityManager;
     }
@@ -53,20 +53,20 @@ class CreateRoleHandler implements RequestHandlerInterface
      */
     public function handle( ServerRequestInterface $request ) : ResponseInterface
     {
-        $form = new RoleForm('create', $this->entityManager );
+        $form = new UserForm('create', $this->entityManager );
         $data = json_decode( $request->getBody()->getContents(), true );
 
         // Fill in the form with POST data
         $form->setData( $data );
 
         if( $form->isValid() ) {
-            $role = $this->roleManager->addRole( $data );
-            $this->roleManager->updateRolePermissions( $role, $data );
+            $user = $this->userManager->addUser( $data );
 
             return new JsonResponse([
-                'name' => $role->getName(),
-                'description' => $role->getDescription()
+                'email' => $user->getEmail(),
+                'full_name' => $user->getFullName()
             ]);
+
         } else {
 
             $response = new JsonResponse(
