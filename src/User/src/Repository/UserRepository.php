@@ -25,13 +25,14 @@ class UserRepository extends EntityRepository
 
     /**
      * Retrieves all users in descending dateCreated order.
-     * @return Query
+     * @return array
      */
     public function findAllUsers()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u.id, u.email, u.fullName')
+        $queryBuilder->select(['u.id, u.email, u.fullName','r.name role'])
             ->from(User::class, 'u')
+            ->leftJoin('u.roles', 'r')
             ->orderBy('u.dateCreated', 'DESC');
 
         return $queryBuilder->getQuery()->getArrayResult();
