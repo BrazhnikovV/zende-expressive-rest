@@ -28,8 +28,9 @@ return [
             User\Handler\Role\GetRoleHandler::class     => User\Handler\Role\Factory\GetRoleHandlerFactory::class,
             User\Handler\Role\UpdateRoleHandler::class  => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
 
-            User\Handler\User\CreateUserHandler::class => User\Handler\User\Factory\CreateUserHandlerFactory::class,
-            User\Handler\User\GetUsersHandler::class   => User\Handler\User\Factory\GetUsersHandlerFactory::class,
+            User\Handler\User\CreateUserHandler::class  => User\Handler\User\Factory\CreateUserHandlerFactory::class,
+            User\Handler\User\GetUserByIdHandler::class => User\Handler\User\Factory\GetUserByIdHandlerFactory::class,
+            User\Handler\User\GetUsersHandler::class    => User\Handler\User\Factory\GetUsersHandlerFactory::class,
         ],
     ],
 ];
