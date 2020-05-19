@@ -31,8 +31,8 @@ class DeleteUserHandler implements RequestHandlerInterface
      */
     public function __construct( $userManager, $entityManager )
     {
-        $this->userManager     = $userManager;
-        $this->entityManager   = $entityManager;
+        $this->userManager   = $userManager;
+        $this->entityManager = $entityManager;
     }
 
     public function handle(ServerRequestInterface $request) : ResponseInterface

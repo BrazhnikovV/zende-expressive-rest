@@ -138,7 +138,7 @@ class UserForm extends Form
                     ['name' => 'ToInt'],
                 ],                
                 'validators' => [
-                    ['name'=>'InArray', 'options'=>['haystack'=>[1, 2]]]
+                    ['name'=>'InArray', 'options'=>['haystack'=>[0, 1]]]
                 ],
             ]); 
         
