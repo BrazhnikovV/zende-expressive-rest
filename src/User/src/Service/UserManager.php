@@ -59,6 +59,9 @@ class UserManager
 
     /**
      * This method adds a new user.
+     * @param $data - данные формы
+     * @return User
+     * @throws \Exception
      */
     public function addUser($data)
     {
@@ -70,7 +73,7 @@ class UserManager
         // Create new User entity.
         $user = new User();
         $user->setEmail($data['email']);
-        $user->setFullName($data['full_name']);
+        $user->setFullName($data['fullName']);
 
         // Encrypt password and store the password in encrypted state.
         $bcrypt = new Bcrypt();
@@ -79,7 +82,7 @@ class UserManager
         $user->setStatus($data['status']);
 
         // Assign roles to user.
-        $this->assignRoles( $user, $data['role']);
+        $this->assignRoles( $user, $data['roles']);
 
         // Add the entity to the entity manager.
         $this->entityManager->persist($user);
@@ -91,9 +94,12 @@ class UserManager
     }
 
     /**
-     * This method updates data of an existing user.
+     * @param $user - сущность пользователя
+     * @param $data - данные формы
+     * @return mixed
+     * @throws \Exception
      */
-    public function updateUser($user, $data)
+    public function updateUser( $user, $data )
     {
         // Do not allow to change user email if another user with such email already exits.
         if($user->getEmail()!=$data['email'] && $this->checkUserExists($data['email'])) {
@@ -101,7 +107,7 @@ class UserManager
         }
 
         $user->setEmail($data['email']);
-        $user->setFullName($data['full_name']);
+        $user->setFullName($data['fullName']);
         $user->setStatus($data['status']);
 
         // Assign roles to user.
@@ -110,7 +116,7 @@ class UserManager
         // Apply changes to database.
         $this->entityManager->flush();
 
-        return true;
+        return $user;
     }
 
     /**
@@ -178,13 +184,16 @@ class UserManager
 
     /**
      * Checks that the given password is correct.
+     * @param $user - сущность пользователя
+     * @param $password - проверяемый пароль
+     * @return bool
      */
-    public function validatePassword($user, $password)
+    public function validatePassword( $user, $password )
     {
         $bcrypt = new Bcrypt();
         $passwordHash = $user->getPassword();
 
-        if ($bcrypt->verify($password, $passwordHash)) {
+        if ( $bcrypt->verify( $password, $passwordHash ) ) {
             return true;
         }
 
@@ -255,12 +264,14 @@ class UserManager
 
     /**
      * Checks whether the given password reset token is a valid one.
+     * @param $email - электронный адрес пользователя
+     * @param $passwordResetToken
+     * @return bool
      */
-    public function validatePasswordResetToken($email, $passwordResetToken)
+    public function validatePasswordResetToken( $email, $passwordResetToken )
     {
         // Find user by email.
-        $user = $this->entityManager->getRepository(User::class)
-                ->findOneByEmail($email);
+        $user = $this->entityManager->getRepository( User::class )->findOneByEmail( $email );
 
         if($user==null || $user->getStatus() != User::STATUS_ACTIVE) {
             return false;

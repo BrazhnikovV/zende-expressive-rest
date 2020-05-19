@@ -22,8 +22,9 @@ class UserRepository extends EntityRepository
     public function findUserById( $id )
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('u.id, u.email, u.fullName')
+        $queryBuilder->select(['u','r'])
             ->from(User::class, 'u')
+            ->leftJoin('u.roles', 'r')
             ->where("u.id = ?1")
             ->orderBy('u.dateCreated', 'DESC')
             ->setParameter("1", $id);

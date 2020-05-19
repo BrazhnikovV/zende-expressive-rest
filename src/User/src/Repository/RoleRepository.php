@@ -16,7 +16,7 @@ class RoleRepository extends EntityRepository
     public function findAllRoles()
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder();
-        $queryBuilder->select('r')
+        $queryBuilder->select('r.id, r.id value, r.name, r.description')
             ->from(\User\Entity\Role::class, 'r')
             ->orderBy('r.id', 'DESC');
 

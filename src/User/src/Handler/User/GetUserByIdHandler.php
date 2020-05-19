@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace User\Handler\User;
 
+use User\Entity\User;
 use Psr\Http\Message\ResponseInterface;
+use Zend\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use User\Entity\User;
-use Zend\Diactoros\Response\JsonResponse;
 
 /**
  * Class GetUserByIdHandler

@@ -12,6 +12,7 @@ use User\Handler\Role\GetRoleByIdHandler;
 use User\Handler\User\CreateUserHandler;
 use User\Handler\User\GetUserByIdHandler;
 use User\Handler\User\GetUsersHandler;
+use User\Handler\User\UpdateUserHandler;
 use Zend\Expressive\Application;
 use User\Handler\Role\RoleHandler;
 use User\Handler\Role\GetRoleHandler;
@@ -74,4 +75,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/users', [GetUsersHandler::class], 'user.get');
     $app->get('/api/user/{id}', [GetUserByIdHandler::class], 'user.get-by-id');
     $app->post('/api/create-user', [CreateUserHandler::class], 'user.create');
+    $app->put('/api/update-user/{id}', [UpdateUserHandler::class], 'user.update');
 };

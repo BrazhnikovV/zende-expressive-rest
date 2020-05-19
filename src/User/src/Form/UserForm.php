@@ -95,7 +95,7 @@ class UserForm extends Form
         
         // Add input for "full_name" field
         $inputFilter->add([
-                'name'     => 'full_name',
+                'name'     => 'fullName',
                 'required' => true,
                 'filters'  => [                    
                     ['name' => 'StringTrim'],
@@ -111,9 +111,9 @@ class UserForm extends Form
                 ],
             ]);
 
-            
-        // Add input for "password" field
-        $inputFilter->add([
+        if ( $this->scenario == 'create' ) {
+            // Add input for "password" field
+            $inputFilter->add([
                 'name'     => 'password',
                 'required' => true,
                 'filters'  => [
@@ -128,7 +128,7 @@ class UserForm extends Form
                     ],
                 ],
             ]);
-
+        }
         
         // Add input for "status" field
         $inputFilter->add([
@@ -145,7 +145,7 @@ class UserForm extends Form
         // Add input for "roles" field
         $inputFilter->add([
                 'class'    => ArrayInput::class,
-                'name'     => 'role',
+                'name'     => 'roles',
                 'required' => true,
                 'filters'  => [                    
                     ['name' => 'ToInt'],
