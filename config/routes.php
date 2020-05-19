@@ -10,6 +10,7 @@ use User\Handler\Permission\UpdatePermissionHandler;
 use User\Handler\Role\DeleteRoleHandler;
 use User\Handler\Role\GetRoleByIdHandler;
 use User\Handler\User\CreateUserHandler;
+use User\Handler\User\DeleteUserHandler;
 use User\Handler\User\GetUserByIdHandler;
 use User\Handler\User\GetUsersHandler;
 use User\Handler\User\UpdateUserHandler;
@@ -76,4 +77,5 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/user/{id}', [GetUserByIdHandler::class], 'user.get-by-id');
     $app->post('/api/create-user', [CreateUserHandler::class], 'user.create');
     $app->put('/api/update-user/{id}', [UpdateUserHandler::class], 'user.update');
+    $app->delete('/api/delete-user/{id}', [DeleteUserHandler::class], 'user.delete');
 };

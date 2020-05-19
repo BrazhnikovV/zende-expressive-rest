@@ -12,9 +12,9 @@ declare(strict_types=1);
 return [
     'dependencies' => [
         'factories' => [
-            App\Handler\Auth\AuthorizationHandler::class => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
+            App\Handler\Auth\AuthorizationHandler::class   => App\Handler\Auth\Factory\AuthorizationHandlerFactory::class,
             Auth\Handler\Auth\AuthenticationHandler::class => Auth\Handler\Auth\Factory\AuthenticationHandlerFactory::class,
-            Auth\Handler\Login\LoginHandler::class => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
+            Auth\Handler\Login\LoginHandler::class         => Auth\Handler\Login\Factory\LoginHandlerFactory::class,
 
             User\Handler\Permission\CreatePermissionHandler::class  => User\Handler\Permission\Factory\CreatePermissionHandlerFactory::class,
             User\Handler\Permission\DeletePermissionHandler::class  => User\Handler\Permission\Factory\DeletePermissionHandlerFactory::class,
@@ -29,6 +29,7 @@ return [
             User\Handler\Role\UpdateRoleHandler::class  => User\Handler\Role\Factory\UpdateRoleHandlerFactory::class,
 
             User\Handler\User\CreateUserHandler::class  => User\Handler\User\Factory\CreateUserHandlerFactory::class,
+            User\Handler\User\DeleteUserHandler::class  => User\Handler\User\Factory\DeleteUserHandlerFactory::class,
             User\Handler\User\GetUserByIdHandler::class => User\Handler\User\Factory\GetUserByIdHandlerFactory::class,
             User\Handler\User\GetUsersHandler::class    => User\Handler\User\Factory\GetUsersHandlerFactory::class,
             User\Handler\User\UpdateUserHandler::class  => User\Handler\User\Factory\UpdateUserHandlerFactory::class,

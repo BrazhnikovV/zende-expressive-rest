@@ -120,9 +120,28 @@ class UserManager
     }
 
     /**
-     * A helper method which assigns new roles to the user.
+     * Deletes the given user.
+     * @param $user - сущность пользователя
+     * @return mixed
      */
-    private function assignRoles($user, $role)
+    public function deleteUser( $user )
+    {
+        // Remove old user role(s).
+        $user->getRoles()->clear();
+
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+
+        return $user;
+    }
+
+    /**
+     * assignRoles - A helper method which assigns new roles to the user.
+     * @param $user - сущность пользователя
+     * @param $role - сущность роли пользователя
+     * @throws \Exception
+     */
+    private function assignRoles( $user, $role )
     {
         // Remove old user role(s).
         $user->getRoles()->clear();
@@ -173,11 +192,12 @@ class UserManager
 
     /**
      * Checks whether an active user with given email address already exists in the database.
+     * @param $email
+     * @return bool
      */
-    public function checkUserExists($email) {
+    public function checkUserExists( $email ) {
 
-        $user = $this->entityManager->getRepository(User::class)
-                ->findOneByEmail($email);
+        $user = $this->entityManager->getRepository(User::class)->findOneByEmail($email);
 
         return $user !== null;
     }
