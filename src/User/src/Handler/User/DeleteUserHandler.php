@@ -48,6 +48,6 @@ class DeleteUserHandler implements RequestHandlerInterface
         }
 
         $response = new JsonResponse(['success' => false, 'id' => $id]);
-        return $response->withStatus(422 );
+        return $response->withStatus(404 );
     }
 }

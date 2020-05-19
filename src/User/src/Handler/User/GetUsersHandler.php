@@ -39,6 +39,12 @@ class GetUsersHandler implements RequestHandlerInterface
     {
         // !Fixme необходимо учитывать наличие пагинации на клиенте !!!
         $roles = $this->em->getRepository( User::class )->findAllUsers();
-        return new JsonResponse( $roles );
+
+        if ( $roles != null ) {
+            return new JsonResponse( $roles );
+        }
+
+        $response = new JsonResponse(['success' => false]);
+        return $response->withStatus(404 );
     }
 }

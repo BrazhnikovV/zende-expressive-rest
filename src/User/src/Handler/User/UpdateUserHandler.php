@@ -59,6 +59,11 @@ class UpdateUserHandler implements RequestHandlerInterface
 
         if ( $user == null ) {
             $response = new JsonResponse(['success' => false, 'id' => $id]);
+            return $response->withStatus(404 );
+        }
+
+        if ( $user->getFullName() === 'Admin' ) {
+            $response = new JsonResponse(['success' => false, 'message' => 'Нельзя редактировать админа']);
             return $response->withStatus(422 );
         }
 

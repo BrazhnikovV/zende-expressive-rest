@@ -38,9 +38,9 @@ class GetUserByIdHandler implements RequestHandlerInterface
 
         if ( $user != null ) {
             return new JsonResponse($user[0]);
-        } else {
-            $response = new JsonResponse(['success' => false, 'id' => $id]);
-            return $response->withStatus(422 );
         }
+
+        $response = new JsonResponse(['success' => false, 'id' => $id]);
+        return $response->withStatus(404 );
     }
 }

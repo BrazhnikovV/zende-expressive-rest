@@ -64,7 +64,7 @@ class CreateUserHandler implements RequestHandlerInterface
 
             return new JsonResponse([
                 'email' => $user->getEmail(),
-                'full_name' => $user->getFullName()
+                'fullName' => $user->getFullName()
             ]);
 
         } else {
