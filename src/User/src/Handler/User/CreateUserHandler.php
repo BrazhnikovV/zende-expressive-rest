@@ -73,7 +73,7 @@ class CreateUserHandler implements RequestHandlerInterface
                 $this->formErrorFilter->filter( $form->getMessages() )
             );
 
-            return $response->withStatus(422 );
+            return $response->withStatus(400 );
         }
     }
 }

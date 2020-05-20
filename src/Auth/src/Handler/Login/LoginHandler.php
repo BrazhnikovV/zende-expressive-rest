@@ -103,7 +103,7 @@ class LoginHandler implements RequestHandlerInterface
                     'field'   => 'Ошибка',
                     'message' => 'Неверное имя пользователя или пароль'
                 ]]);
-                return $response->withStatus(422);
+                return $response->withStatus(401);
         } else {
             $response = new JsonResponse(
                 $this->formErrorFilter->filter( $form->getMessages() )
