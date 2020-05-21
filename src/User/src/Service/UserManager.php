@@ -221,11 +221,13 @@ class UserManager
     }
 
     /**
-     * Generates a password reset token for the user. This token is then stored in database and
+     * generatePasswordResetToken - Generates a password reset token for the user. This token is then stored in database and
      * sent to the user's E-mail address. When the user clicks the link in E-mail message, he is
      * directed to the Set Password page.
+     * @param $user - сущность пользователя
+     * @throws \Exception
      */
-    public function generatePasswordResetToken($user)
+    public function generatePasswordResetToken( $user )
     {
         if ($user->getStatus() != User::STATUS_ACTIVE) {
             throw new \Exception('Cannot generate password reset token for inactive user ' . $user->getEmail());
@@ -350,22 +352,25 @@ class UserManager
     }
 
     /**
-     * This method is used to change the password for the given user. To change the password,
+     * changePassword - This method is used to change the password for the given user. To change the password,
      * one must know the old password.
+     * @param $user - сущность пользователя
+     * @param $data - данные формы со старым и новым паролем
+     * @return bool
      */
-    public function changePassword($user, $data)
+    public function changePassword( $user, $data )
     {
-        $oldPassword = $data['old_password'];
+        $oldPassword = $data['oldPassword'];
 
         // Check that old password is correct
-        if (!$this->validatePassword($user, $oldPassword)) {
+        if ( !$this->validatePassword( $user, $oldPassword ) ) {
             return false;
         }
 
-        $newPassword = $data['new_password'];
+        $newPassword = $data['newPassword'];
 
         // Check password length
-        if (strlen($newPassword)<6 || strlen($newPassword)>64) {
+        if ( strlen( $newPassword ) < 6 || strlen( $newPassword ) > 64 ) {
             return false;
         }
 
