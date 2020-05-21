@@ -75,10 +75,8 @@ class ChangePasswordHandler implements RequestHandlerInterface
                     return new JsonResponse(['success' => false]);
                 }
             } else {
-                return new JsonResponse([
-                    'field' => 'oldPassword',
-                    'message' => 'Password incorrect'
-                ]);
+                $response = new JsonResponse(['field' => 'oldPassword', 'message' => 'Password incorrect']);
+                return $response->withStatus(400 );
             }
         } else {
 
