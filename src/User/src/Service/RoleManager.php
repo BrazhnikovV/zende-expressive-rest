@@ -235,7 +235,7 @@ class RoleManager
         $role->getPermissions()->clear();
 
         // Assign new permissions to role
-        foreach ($data['permissions'] as $permission) {
+        foreach ( $data['permissions'] as $permission ) {
 
             $permission = $this->entityManager->getRepository( Permission::class )->findOneById( $permission['id'] );
             if ( $permission == null ) {
