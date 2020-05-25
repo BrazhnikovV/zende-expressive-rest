@@ -104,7 +104,8 @@ class AuthAdapter implements AuthenticationInterface
      */
     public function unauthorizedResponse( ServerRequestInterface $request ): ResponseInterface
     {
-        return new JsonResponse( ['status' => 401] );
+        $response = new JsonResponse(['success' => false,'status' => 401]);
+        return $response->withStatus(401 );
     }
 }
 

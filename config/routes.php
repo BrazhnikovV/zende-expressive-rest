@@ -62,22 +62,22 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
         App\Handler\PingHandler::class
     ], 'api.ping');
 
-    $app->get('/api/roles', [GetRoleHandler::class], 'role.get');
-    $app->get('/api/role/{id}', [GetRoleByIdHandler::class], 'role.get-by-id');
-    $app->post('/api/create-role', [CreateRoleHandler::class], 'role.create');
-    $app->put('/api/update-role/{id}', [UpdateRoleHandler::class], 'role.update');
-    $app->delete('/api/delete-role/{id}', [DeleteRoleHandler::class], 'role.delete');
+    $app->get('/api/roles', [AuthenticationHandler::class,AuthorizationHandler::class,GetRoleHandler::class], 'role.get');
+    $app->get('/api/role/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,GetRoleByIdHandler::class], 'role.get-by-id');
+    $app->post('/api/create-role', [AuthenticationHandler::class,AuthorizationHandler::class,CreateRoleHandler::class], 'role.create');
+    $app->put('/api/update-role/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,UpdateRoleHandler::class], 'role.update');
+    $app->delete('/api/delete-role/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,DeleteRoleHandler::class], 'role.delete');
 
-    $app->get('/api/permissions', [GetPermissionHandler::class], 'permission.get');
-    $app->get('/api/permission/{id}', [GetPermissionByIdHandler::class], 'permission.get-by-id');
-    $app->post('/api/create-permission', [CreatePermissionHandler::class], 'permission.create');
-    $app->put('/api/update-permission/{id}', [UpdatePermissionHandler::class], 'permission.update');
-    $app->delete('/api/delete-permission/{id}', [DeletePermissionHandler::class], 'permission.delete');
+    $app->get('/api/permissions', [AuthenticationHandler::class,AuthorizationHandler::class,GetPermissionHandler::class], 'permission.get');
+    $app->get('/api/permission/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,GetPermissionByIdHandler::class], 'permission.get-by-id');
+    $app->post('/api/create-permission', [AuthenticationHandler::class,AuthorizationHandler::class,CreatePermissionHandler::class], 'permission.create');
+    $app->put('/api/update-permission/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,UpdatePermissionHandler::class], 'permission.update');
+    $app->delete('/api/delete-permission/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,DeletePermissionHandler::class], 'permission.delete');
 
-    $app->get('/api/users', [GetUsersHandler::class], 'user.get');
-    $app->get('/api/user/{id}', [GetUserByIdHandler::class], 'user.get-by-id');
-    $app->post('/api/create-user', [CreateUserHandler::class], 'user.create');
-    $app->put('/api/update-user/{id}', [UpdateUserHandler::class], 'user.update');
-    $app->delete('/api/delete-user/{id}', [DeleteUserHandler::class], 'user.delete');
-    $app->put('/api/change-password-user/{id}', [ChangePasswordHandler::class], 'user.change-password');
+    $app->get('/api/users', [AuthenticationHandler::class,AuthorizationHandler::class,GetUsersHandler::class], 'user.get');
+    $app->get('/api/user/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,GetUserByIdHandler::class], 'user.get-by-id');
+    $app->post('/api/create-user', [AuthenticationHandler::class,AuthorizationHandler::class,CreateUserHandler::class], 'user.create');
+    $app->put('/api/update-user/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,UpdateUserHandler::class], 'user.update');
+    $app->delete('/api/delete-user/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,DeleteUserHandler::class], 'user.delete');
+    $app->put('/api/change-password-user/{id}', [AuthenticationHandler::class,AuthorizationHandler::class,ChangePasswordHandler::class], 'user.change-password');
 };
