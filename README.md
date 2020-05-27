@@ -148,3 +148,16 @@ Please note that the installer tests remove installed config files and templates
 before and after running the tests.
 
 Before contributing read [the contributing guide](docs/CONTRIBUTING.md).
+
+## Configuration application
+
+Please create the necessary configuration files by renaming files with the extension .dist to files with the extension .php:
+
+**Prod:**
+- authorization.local.php.dist
+- doctrine.local.php.dist
+- jwt.local.php.dist
+
+**Dev:**
+- development.local.php.dist
+- development.config.php.dist
